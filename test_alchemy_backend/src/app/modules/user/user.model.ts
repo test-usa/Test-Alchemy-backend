@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
-import { TCandidate } from "./candidate.interface";
+import { TUser } from "./user.interface";
 
-const candidateSchema = new Schema<TCandidate>(
+const candidateSchema = new Schema<TUser>(
   {
     id: {
       type: String,
@@ -42,4 +42,4 @@ const candidateSchema = new Schema<TCandidate>(
   }
 );
 
-export const candidateModel = model<TCandidate>("Candidate", candidateSchema);
+export const candidateModel = model<TUser>("Candidate", candidateSchema);
