@@ -28,7 +28,12 @@ const moduleRouts = [
 
 // Register each route in moduleRouts
 moduleRouts.forEach(({ path, router }) => {
+<<<<<<< HEAD
   Routes.use(path, router);
+=======
+    // console.log("path:",path,router)
+    Routes.use(path, router);
+>>>>>>> 41fcb42dc7348ba7e7c2042859cb3e8fa125a86d
 });
 
 // Export the router
