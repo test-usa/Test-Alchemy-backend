@@ -1,9 +1,9 @@
-import express from "express"
+import express from "express";
 
-const authRouter = express.Router()
+const authRouter = express.Router();
 
-authRouter.get("/logIn",(req,res)=>{
-    console.log("habib")
-})
+authRouter.get("/logIn", (req, res) => {
+  console.log("habib");
+});
 
-export default authRouter
+export default authRouter;
