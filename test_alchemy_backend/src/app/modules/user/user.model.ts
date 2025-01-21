@@ -1,7 +1,8 @@
 import { model, Schema } from "mongoose";
 import { TUser } from "./user.interface";
+import bcrypt from "bcrypt";
 
-const candidateSchema = new Schema<TUser>(
+const userSchema = new Schema<TUser>(
   {
     id: {
       type: String,
@@ -18,7 +19,6 @@ const candidateSchema = new Schema<TUser>(
     email: {
       type: String,
       required: true,
-      unique: true,
     },
     password: {
       type: String,
@@ -35,6 +35,12 @@ const candidateSchema = new Schema<TUser>(
     userType: {
       type: String,
       enum: ["candidate", "examinee"],
+      required: true,
+    },
+    isDeleted: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
   },
   {
@@ -42,4 +48,10 @@ const candidateSchema = new Schema<TUser>(
   }
 );
 
-export const candidateModel = model<TUser>("Candidate", candidateSchema);
+userSchema.pre("save", async function (next) {
+  const hashedPass = await bcrypt.hash(this.password as string, 6);
+  this.password = hashedPass;
+  next();
+});
+
+export const UserMOdel = model<TUser>("User", userSchema);

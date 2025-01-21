@@ -7,4 +7,5 @@ export type TUser = {
   lastName: string;
   img: string;
   domain: string;
+  isDeleted: boolean;
 };

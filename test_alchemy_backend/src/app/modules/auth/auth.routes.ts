@@ -1,9 +1,10 @@
 import express from "express"
+import authController from "./auth.controller"
+import validator from "../../util/validator"
+import { logInValidator } from "./auth.validatot"
 
-const authRouter = express.Router()
+const authRouter = express.Router();
 
-authRouter.get("/logIn",(req,res)=>{
-    console.log("habib")
-})
+authRouter.post("/logIn",validator(logInValidator),authController.logIn)
 
-export default authRouter
+export default authRouter;
