@@ -1,19 +1,30 @@
 import express from "express";
+import authRouter from "../modules/auth/auth.routes";
+import candidateRouter from "../modules/candidate/candidate.routes";
+import examineRoutes from "../modules/examine/examine.routes";
 
-const Routs = express.Router();
+const Routes = express.Router();
 
 // Array of module routes
-// const moduleRouts = [
-//     {
-//         path: "auth",
-//         router: authRouter, 
-//     },
-// ];
+const moduleRouts = [
+    {
+        path: "/auth",
+        router: authRouter, 
+    },
+    {
+        path: "/examine",
+        router: examineRoutes, 
+    },
+    {
+        path: "/candidate",
+        router: candidateRouter, 
+    },
+];
 
 // Register each route in moduleRouts
-// moduleRouts.forEach(({ path, router }) => {
-//     Routs.use(`/${path}`, router);
-// });
+moduleRouts.forEach(({ path, router }) => {
+    Routes.use(path, router);
+});
 
 // Export the router
-export default Routs;
+export default Routes;
