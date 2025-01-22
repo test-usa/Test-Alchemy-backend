@@ -15,6 +15,7 @@ export const createUserIntoDB = async (payload: TUser) => {
   const result = await UserModel.create(payload);
   return result;
 };
+
 export const getSingleUserFromDB = async (id: string) => {
   const isUserExist = await UserModel.findOne({
     id,
