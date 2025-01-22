@@ -1,8 +1,11 @@
-import express from "express"
+import express from "express";
+import { startExam, submitExam } from "./candidate.controller";
 
+const router = express.Router();
 
-const candidateRouter = express.Router()
+router.post("/startExam", startExam);
+router.post("/endExam", submitExam);
 
+const candidateRoutes = router;
 
-
-export default candidateRouter
+export default candidateRoutes;
