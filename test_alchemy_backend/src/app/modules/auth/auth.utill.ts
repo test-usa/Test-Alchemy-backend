@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken"
+import config from "../../config";
 
 
 const createToken = (
@@ -14,4 +15,17 @@ const createToken = (
       );
       return token
 }
-export default createToken
+
+const decodeAuthorizationToken = (token:string)=>{
+    const decoded = jwt.verify(token, config.jwt_token_secret);
+    return decoded
+}
+const decodeRefreshToken = (token:string)=>{
+    const decoded = jwt.verify(token, config.jwt_refresh_Token_secret);
+    return decoded
+}
+
+const authUtill ={
+    createToken,decodeAuthorizationToken,decodeRefreshToken
+}
+export default authUtill
