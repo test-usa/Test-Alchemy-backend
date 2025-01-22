@@ -1,27 +1,52 @@
 import { TUser } from "./user.interface";
-import { UserMOdel } from "./user.model";
-import bcrypt from "bcrypt";
+import { UserModel } from "./user.model";
 
 export const createUserIntoDB = async (payload: TUser) => {
-  const result = await UserMOdel.create(payload);
+  const isUserExist = await UserModel.findOne({
+    id: payload.id,
+    email: payload.email,
+    isDeleted: false,
+  });
+
+  if (isUserExist) {
+    throw new Error("User already exist");
+  }
+
+  const result = await UserModel.create(payload);
   return result;
 };
 export const getSingleUserFromDB = async (id: string) => {
-  const result = await UserMOdel.findOne({ id });
+  const isUserExist = await UserModel.findOne({
+    id,
+    isDeleted: false,
+  });
+  if (!isUserExist) {
+    throw new Error("User dose not exist");
+  }
+  const result = isUserExist;
   return result;
 };
 
-export const getAllUserFromDB = async (id: string) => {
-  const result = await UserMOdel.find();
+export const getAllUserFromDB = async () => {
+  const result = await UserModel.find({ isDeleted: false });
   return result;
 };
 
-export const UpdateUserIntoDB = async (id: string, payload: any) => {
-  const result = await UserMOdel.updateOne({ id }, payload);
+export const updateUserIntoDB = async (id: string, payload: any) => {
+  const isUserExist = await UserModel.findOne({
+    id,
+    isDeleted: false,
+  });
+
+  if (!isUserExist) {
+    throw new Error("User dose not exist");
+  }
+
+  const result = await UserModel.updateOne({ id, isDeleted: false }, payload);
   return result;
 };
 
 export const deleteUserFromDB = async (id: string) => {
-  const result = await UserMOdel.updateOne({ id }, { isDeleted: true });
+  const result = await UserModel.updateOne({ id }, { isDeleted: true });
   return result;
 };

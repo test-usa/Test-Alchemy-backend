@@ -3,11 +3,12 @@ import catchAsync from "../../util/catchAsync";
 import {
   createUserIntoDB,
   deleteUserFromDB,
+  getAllUserFromDB,
   getSingleUserFromDB,
-  UpdateUserIntoDB,
+  updateUserIntoDB,
 } from "./user.service";
 
-export const createUser = catchAsync(async (req, res, next) => {
+export const createUser = catchAsync(async (req, res) => {
   const result = await createUserIntoDB(req.body);
   res.status(200).json({
     message: "User created successfully",
@@ -18,7 +19,7 @@ export const createUser = catchAsync(async (req, res, next) => {
 });
 
 export const updateUser = catchAsync(async (req, res) => {
-  const result = await UpdateUserIntoDB(req.params.id, req.body);
+  const result = await updateUserIntoDB(req.params.id, req.body);
   res.status(200).json({
     message: "User updated successfully",
     success: true,
@@ -38,8 +39,7 @@ export const getSingleUser = catchAsync(async (req, res) => {
 });
 
 export const getAllUser = catchAsync(async (req, res) => {
-  console.log("hit");
-  const result = await getSingleUserFromDB(req.params.id);
+  const result = await getAllUserFromDB();
   res.status(200).json({
     message: "All users data retrieved successfully",
     success: true,
