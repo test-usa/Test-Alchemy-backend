@@ -44,12 +44,10 @@ const userSchema = new Schema<TUser>(
     },
     isLoggedIn: {
       type: Boolean,
-      required: true,
       default: false,
     },
     loggedOutTime: {
       type: String,
-      required: true,
     },
   },
   {

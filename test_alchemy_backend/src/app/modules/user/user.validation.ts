@@ -11,8 +11,8 @@ export const userValidationSchema = z.object({
     img: z.string(),
     userType: z.enum(["candidate", "examinee", "admin"]),
     isDeleted: z.boolean().default(false),
-    isLoggedIn: z.boolean().default(false),
-    loggedOutTime: z.string(),
+    isLoggedIn: z.boolean().optional().default(false),
+    loggedOutTime: z.string().optional(),
   }),
 });
 
