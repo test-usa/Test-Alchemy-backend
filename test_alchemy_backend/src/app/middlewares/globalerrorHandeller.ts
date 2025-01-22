@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 const globalErrorHandler = (
-    error: any, 
+    error: any,
     req: Request,
     res: Response,
     next: NextFunction
@@ -18,8 +18,7 @@ const globalErrorHandler = (
     res.status(statusCode).json({
         status,
         message,
-        ...(process.env.NODE_ENV === "development" && { stack: error.stack }), // Include stack trace in development
-        errorDetails: error.details || null, // Optionally include additional error details
+        error // Optionally include additional error details
     });
 };
 

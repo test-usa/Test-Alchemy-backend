@@ -34,13 +34,20 @@ const userSchema = new Schema<TUser>(
     },
     userType: {
       type: String,
-      enum: ["candidate", "examinee"],
+      enum: ["candidate", "examinee", "admin"],
       required: true,
     },
     isDeleted: {
       type: Boolean,
       required: true,
       default: false,
+    },
+    isLoggedIn: {
+      type: Boolean,
+      default: false,
+    },
+    loggedOutTime: {
+      type: String,
     },
   },
   {
@@ -54,4 +61,9 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-export const UserMOdel = model<TUser>("User", userSchema);
+userSchema.pre("findOneAndUpdate", async function (next) {
+  console.log(this);
+  next();
+});
+
+export const UserModel = model<TUser>("User", userSchema);

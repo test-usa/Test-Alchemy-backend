@@ -6,5 +6,6 @@ import { logInValidator } from "./auth.validatot"
 const authRouter = express.Router();
 
 authRouter.post("/logIn",validator(logInValidator),authController.logIn)
+authRouter.get("/logOut",authController.logOut)
 
 export default authRouter;
