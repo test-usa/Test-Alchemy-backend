@@ -1,7 +1,17 @@
-import express from "express"
+import express from "express";
+import {
+  addQuestionPaper,
+  deleteQuestionPaper,
+  getQuestionPaper,
+  updateQuestionPaper,
+} from "./examinee.controller";
 
-const examineRoutes=express.Router()
+const router = express.Router();
 
-examineRoutes.post("/logIn", )
+router.post("/", addQuestionPaper);
+router.patch("/", updateQuestionPaper);
+router.delete("/", deleteQuestionPaper);
 
-export default examineRoutes
+const examineeRoutes = router;
+
+export default examineeRoutes;
