@@ -48,7 +48,7 @@ const userSchema = new Schema<TUser>(
     },
     loggedOutTime: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   {
