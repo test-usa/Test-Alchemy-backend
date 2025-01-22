@@ -1,9 +1,14 @@
 export interface ExamType {
     name: string,
-    isSubmitted: string,
-    totalMraks: string,
-    starteTime: string,
-    endTime: string,
-    duration: string
-    questions: {}[]
+    isSubmitted: boolean,
+    totalMarks: number,
+    acquiredMark: number,
+    startTime: Date,
+    endTime: Date,
+    isDeleted: boolean,
+    questionPaperId: string,
+    answerSheet: {
+        qId: string,
+        answer: number
+    }[]
 }

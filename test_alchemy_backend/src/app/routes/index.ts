@@ -3,6 +3,7 @@ import authRouter from "../modules/auth/auth.routes";
 import candidateRouter from "../modules/candidate/candidate.routes";
 import examineRoutes from "../modules/examine/examine.routes";
 import userRoutes from "../modules/user/user.route";
+import examRoute from "../modules/exam/exam.route";
 
 const Routes = express.Router();
 console.log("working");
@@ -24,6 +25,10 @@ const moduleRouts = [
     path: "/candidate",
     router: candidateRouter,
   },
+  {
+    path: "/exam",
+    router: examRoute
+  }
 ];
 
 // Register each route in moduleRouts
