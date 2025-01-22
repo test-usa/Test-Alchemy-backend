@@ -18,6 +18,11 @@ const questionPaperSchema = new Schema<TQuestionPaper>({
     type: [],
     required: true,
   },
+  examineeId: {
+    type: Schema.Types.ObjectId,
+    ref: "Exam",
+    required: true,
+  },
 });
 
 export const QuestionPaperModel = model<TQuestionPaper>(

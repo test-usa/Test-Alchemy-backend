@@ -1,9 +1,10 @@
 
 import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
+import jwt, { JwtPayload } from "jsonwebtoken"
 import createToken from "./auth.utill"
 import config from "../../config"
 import { UserModel } from "../user/user.model"
+import authUtill from "./auth.utill"
 
 const logIn = async (email: string, password: string) => {
     const findUserWithEmail = await UserModel.findOne({ email: email })
@@ -30,8 +31,8 @@ const logIn = async (email: string, password: string) => {
 
     // Tokenize user data
     const tokenizeData = { id: findUserWithEmail.id, role: findUserWithEmail.userType };
-    const approvalToken = createToken(tokenizeData, config.jwt_token_secret, config.token_expairsIn);
-    const refreshToken = createToken(tokenizeData, config.jwt_refresh_Token_secret, config.rifresh_expairsIn);
+    const approvalToken = authUtill.createToken(tokenizeData, config.jwt_token_secret, config.token_expairsIn);
+    const refreshToken = authUtill.createToken(tokenizeData, config.jwt_refresh_Token_secret, config.rifresh_expairsIn);
 
     // console.log(approvalToken, refreshToken, findUserWithEmail)
 
@@ -41,12 +42,13 @@ const logIn = async (email: string, password: string) => {
 }
 
 const logOut = async (authorizationToken: string) => {
-    // console.log("env",config.jwt_refresh_Token_secret)
-    const decoded = jwt.verify(authorizationToken, config.jwt_token_secret);
-    console.log(decoded)
 
-    // const findUserById = await UserModel.findOneAndUpdate({ id: id }, { isLoggedIn: false }, { new: true })
-    // return findUserById
+
+    const decoded = authUtill.decodeAuthorizationToken(authorizationToken)
+    const { id } = decoded as JwtPayload
+
+    const findUserById = await UserModel.findOneAndUpdate({ id: id }, { isLoggedIn: false, loggedOutTime: new Date() }, { new: true })
+    return findUserById
 }
 
 const authSercvices = {

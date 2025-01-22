@@ -11,6 +11,8 @@ import {
   userUpdateValidationSchema,
   userValidationSchema,
 } from "./user.validation";
+import auth from "../../middlewares/auth";
+import { userRole } from "../../constents";
 
 const router = express.Router();
 
