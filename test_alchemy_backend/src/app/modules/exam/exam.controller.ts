@@ -12,3 +12,4 @@ export const createExamController = catchAsync(async (req, res) => {
         body: result,
     })
 })
+
