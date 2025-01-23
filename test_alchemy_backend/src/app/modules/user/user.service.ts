@@ -2,6 +2,7 @@ import { TUser } from "./user.interface";
 import { UserModel } from "./user.model";
 
 export const createUserIntoDB = async (payload: TUser) => {
+  
   const isUserExist = await UserModel.findOne({
     id: payload.id,
     email: payload.email,
