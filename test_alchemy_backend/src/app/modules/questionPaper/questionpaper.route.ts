@@ -7,15 +7,20 @@ import {
   getSingleQuestionPaper,
   updateQuestionPaper,
 } from "./questionPaper.controller";
+import auth from "../../middlewares/auth";
 
 const router = express.Router();
 
 router.get("/", getAllQuestionPaper);
-router.get("/examinee/:examineeId", getQuestionPapersOfExaminee);
+router.get(
+  "/examinee/:examineeId",
+  auth("examinee"),
+  getQuestionPapersOfExaminee
+);
 router.get("/single/:qid", getSingleQuestionPaper);
-router.post("/", createQuestionPaper);
-router.patch("/:qid", updateQuestionPaper);
-router.delete("/:qid", deleteQuestionPaper);
+router.post("/", auth("examinee"), createQuestionPaper);
+router.patch("/:qid", auth("examinee"), updateQuestionPaper);
+router.delete("/:qid", auth("examinee"), deleteQuestionPaper);
 
 const questionPaperRoutes = router;
 

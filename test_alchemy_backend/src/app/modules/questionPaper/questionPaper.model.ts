@@ -63,6 +63,8 @@ const questionPaperSchema = new Schema<TQuestionPaper>(
   }
 );
 
+questionPaperSchema.post("save", () => {});
+
 export const QuestionPaperModel = model<TQuestionPaper>(
   "QuestionPaper",
   questionPaperSchema

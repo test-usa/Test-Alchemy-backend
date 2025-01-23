@@ -8,7 +8,6 @@ const userSchema = new Schema<TUser>(
   {
     id: {
       type: String,
-      required: true,
     },
     firstName: {
       type: String,
@@ -24,6 +23,7 @@ const userSchema = new Schema<TUser>(
     },
     password: {
       type: String,
+      select: false,
       required: true,
     },
     domain: {
@@ -62,6 +62,7 @@ userSchema.pre("save", async function (next) {
   this.password = hashedPass;
   next();
 });
+
 userSchema.post("save", async function () {
   if (this.userType === "candidate") {
     await CandidateModel.create({
