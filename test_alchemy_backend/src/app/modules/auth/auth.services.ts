@@ -15,19 +15,6 @@ const logIn = async (email: string, password: string) => {
     throw Error("password is not matched");
   }
 
-  const findUserAndUpdate = await UserModel.findOneAndUpdate(
-    { email: email },
-    {
-      isLoggedIn: true,
-    },
-    {
-      new: true,
-    }
-  );
-  if (!findUserWithEmail) {
-    throw Error("no; user found with this email");
-  }
-
   // Tokenize user data
   const tokenizeData = {
     id: findUserWithEmail.id,
@@ -43,6 +30,18 @@ const logIn = async (email: string, password: string) => {
     config.jwt_refresh_Token_secret,
     config.rifresh_expairsIn
   );
+  const findUserAndUpdate = await UserModel.findOneAndUpdate(
+    { email: email },
+    {
+      isLoggedIn: true,
+    },
+    {
+      new: true,
+    }
+  ).select("+password");
+  if (!findUserWithEmail) {
+    throw Error("no; user found with this email");
+  }
 
   // console.log(approvalToken, refreshToken, findUserWithEmail)
 

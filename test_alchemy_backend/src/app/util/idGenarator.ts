@@ -1,5 +1,6 @@
 import { Model, Query } from "mongoose";
 import { TIdFor } from "../constents";
+import { QuestionPaperModel } from "../modules/questionPaper/questionPaper.model";
 
 
 const collectionIdGenerator = async <T extends Document>(
@@ -35,4 +36,15 @@ const collectionIdGenerator = async <T extends Document>(
     }
 };
 
-export default collectionIdGenerator
+const mcqIdGenerator= async (QPId:string) : Promise<string>=>{
+    const questionPaper = await QuestionPaperModel.findOne({id:QPId})
+    const mcqSetLength = questionPaper?.MCQSet.length
+    return `${QPId}MCQ${mcqSetLength}`
+}
+
+
+const idGenerator= {
+    collectionIdGenerator,mcqIdGenerator
+}
+
+export default idGenerator
