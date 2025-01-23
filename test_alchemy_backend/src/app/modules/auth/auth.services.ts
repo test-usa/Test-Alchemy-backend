@@ -37,6 +37,13 @@ const logIn = async (email: string, password: string) => {
     },
     {
       new: true,
+    const findUserWithEmail = await UserModel.findOne({ email: email }).select("+password")
+    if (!findUserWithEmail) {
+        throw Error("no user found with this email")
+    }
+    const match = await bcrypt.compare(password, findUserWithEmail.password);
+    if (!match) {
+        throw Error("password is not matched")
     }
   ).select("+password");
   if (!findUserWithEmail) {
@@ -44,6 +51,18 @@ const logIn = async (email: string, password: string) => {
   }
 
   // console.log(approvalToken, refreshToken, findUserWithEmail)
+    const findUserAndUpdate = await UserModel.findOneAndUpdate({ email: email },
+        {
+            isLoggedIn: true
+        }
+        ,
+        {
+            new: true
+        }
+    )
+    if (!findUserWithEmail) {
+        throw Error("no; user found with this email")
+    }
 
   return { approvalToken, refreshToken, findUserAndUpdate };
 };
