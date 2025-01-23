@@ -1,9 +1,20 @@
 import { Types } from "mongoose";
 
 export type TQuestionPaper = {
+  qid: string;
   domain: string;
   examineeId: Types.ObjectId;
-  duration: string;
-  totalMarks: number;
-  MCQSet: [];
+  duration: number;
+  totalMarks?: number;
+  MCQSet: TMCQ[];
+  isDeleted: Boolean;
+};
+
+export type TMCQ = {
+  qid: string;
+  mcqId: string;
+  question: string;
+  options: string[];
+  correctAns: 0 | 1 | 2 | 3;
+  mark: number;
 };

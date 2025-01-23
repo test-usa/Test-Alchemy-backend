@@ -1,29 +1,67 @@
-import { model, Schema } from "mongoose";
-import { TQuestionPaper } from "./questionPaper.interface";
+import mongoose, { model, Schema } from "mongoose";
+import { TMCQ, TQuestionPaper } from "./questionPaper.interface";
 
-const questionPaperSchema = new Schema<TQuestionPaper>({
-  domain: {
+const TMCQSchema: Schema = new Schema({
+  qid: {
+    type: mongoose.Types.ObjectId,
+    ref: "QuestionPaper",
+    required: true,
+  },
+  question: {
     type: String,
     required: true,
   },
-  duration: {
-    type: String,
+  options: {
+    type: [String],
     required: true,
   },
-  totalMarks: {
+  correctAns: {
+    type: Number,
+    enum: [0, 1, 2, 3],
+    required: true,
+  },
+  mark: {
     type: Number,
     required: true,
   },
-  MCQSet: {
-    type: [],
-    required: true,
-  },
-  examineeId: {
-    type: Schema.Types.ObjectId,
-    ref: "Exam",
-    required: true,
-  },
 });
+
+const questionPaperSchema = new Schema<TQuestionPaper>(
+  {
+    domain: {
+      type: String,
+      required: true,
+    },
+    duration: {
+      type: Number,
+      required: true,
+    },
+    totalMarks: {
+      type: Number,
+    },
+    MCQSet: {
+      type: [TMCQSchema],
+      required: true,
+    },
+    examineeId: {
+      type: Schema.Types.ObjectId,
+      ref: "Exam",
+      required: true,
+    },
+    qid: {
+      type: String,
+      required: true,
+    },
+    isDeleted: {
+      type: String,
+      required: true,
+      default: false,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 export const QuestionPaperModel = model<TQuestionPaper>(
   "QuestionPaper",

@@ -3,6 +3,7 @@ import authRouter from "../modules/auth/auth.routes";
 import candidateRouter from "../modules/candidate/candidate.routes";
 import examineRoutes from "../modules/examine/examine.routes";
 import userRoutes from "../modules/user/user.route";
+import questionPaperRoutes from "../modules/questionPaper/questionpaper.route";
 
 const Routes = express.Router();
 console.log("working");
@@ -23,6 +24,10 @@ const moduleRouts = [
   {
     path: "/candidate",
     router: candidateRouter,
+  },
+  {
+    path: "/questionPaper",
+    router: questionPaperRoutes,
   },
 ];
 
