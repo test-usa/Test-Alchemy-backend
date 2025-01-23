@@ -1,10 +1,12 @@
 import catchAsync from "../../util/catchAsync";
-import { createExam } from "./exam.service";
+import { 
+    endExam,
+    startExam
+ } from "./exam.service";
 
-export const createExamController = catchAsync(async (req, res) => {
+export const startExamController = catchAsync(async (req, res) => {
     req.body.startTime = parseInt(req.body.startTime, 10)
-    req.body.endTime = parseInt(req.body.startTime, 10)
-    const result = await createExam(req.body)
+    const result = await startExam(req.body)
     res.send({
         message: "Exam created successfully",
         success: true,
@@ -13,3 +15,15 @@ export const createExamController = catchAsync(async (req, res) => {
     })
 })
 
+
+export const endExamController = catchAsync(async (req, res) => {
+    const {id, ...rest} = req.body
+    const result = await endExam(id, rest)
+    
+    res.send({
+        message: "Exam updated successfully",
+        success: true,
+        status: 200,
+        body: req.body,
+    })
+})

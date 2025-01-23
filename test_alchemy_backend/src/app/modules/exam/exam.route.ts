@@ -1,14 +1,22 @@
 import express from "express";
 import validator from "../../util/validator";
-import { createExamValidationSchema } from "./exam.validation";
-import { createExamController } from "./exam.controller";
+import {
+    startExam as StartExamSchema,
+    endExam as EndExamSchema
+} from "./exam.validation";
+import {
+    startExamController,
+    endExamController
+} from "./exam.controller";
 import auth from "../../middlewares/auth";
 import { userRole } from "../../constents";
 
 
 const router = express.Router();
 
-router.post("/create", auth(userRole.candidate) ,validator(createExamValidationSchema), createExamController)
+router.post("/start", auth(userRole.candidate), validator(StartExamSchema), startExamController)
+router.post("/end", auth(userRole.candidate), validator(EndExamSchema), endExamController)
+
 
 const examRoute = router
 
