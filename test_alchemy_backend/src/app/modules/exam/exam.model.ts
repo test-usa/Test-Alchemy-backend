@@ -14,10 +14,6 @@ answerSheetSchema.pre("save", async function (next) {
 })
 
 const examSchema = new Schema<ExamType>({
-    name: {
-        type: String,
-        required: true
-    },
     isSubmitted: {
         type: Boolean,
         required: true,
@@ -29,11 +25,9 @@ const examSchema = new Schema<ExamType>({
     },
     startTime: {
         type: Date,
-        required: true
     },
     endTime: {
         type: Date,
-        required: true
     },
     totalMarks: {
         type: Number
@@ -48,6 +42,11 @@ const examSchema = new Schema<ExamType>({
         required: true,
         unique: true
     },
+    candidId:{
+        type: String,
+        required: true,
+        unique: true
+    }
 }, {
     timestamps: true
 })

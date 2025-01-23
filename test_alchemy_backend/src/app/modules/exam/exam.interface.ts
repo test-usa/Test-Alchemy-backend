@@ -1,12 +1,13 @@
+import { Types } from "mongoose";
 export interface ExamType {
-    name: string,
+    questionPaperId: String,
+    candidId: String
     isSubmitted: boolean,
     totalMarks: number,
     acquiredMark: number,
     startTime: Date,
     endTime: Date,
     isDeleted: boolean,
-    questionPaperId: string,
     answerSheet: {
         qId: string,
         answer: number
