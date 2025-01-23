@@ -1,5 +1,6 @@
 import mongoose, { model, Schema } from "mongoose";
 import { TMCQ, TQuestionPaper } from "./questionPaper.interface";
+import { ExamineeModel } from "../examine/examinee.model";
 
 const TMCQSchema: Schema = new Schema({
   qid: {
@@ -63,7 +64,16 @@ const questionPaperSchema = new Schema<TQuestionPaper>(
   }
 );
 
-questionPaperSchema.post("save", () => {});
+questionPaperSchema.post("save", async function () {
+  await ExamineeModel.updateOne(
+    { uid: this.qid },
+    {
+      $push: {
+        questionPapers: [],
+      },
+    }
+  );
+});
 
 export const QuestionPaperModel = model<TQuestionPaper>(
   "QuestionPaper",
