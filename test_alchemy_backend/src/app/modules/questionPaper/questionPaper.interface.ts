@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 
 export type TQuestionPaper = {
-  qid: string;
+  id: string;
   domain: string;
   examineeId: Types.ObjectId;
   duration: number;
@@ -11,7 +11,7 @@ export type TQuestionPaper = {
 };
 
 export type TMCQ = {
-  qid: string;
+  QPid: string;
   mcqId: string;
   question: string;
   options: string[];

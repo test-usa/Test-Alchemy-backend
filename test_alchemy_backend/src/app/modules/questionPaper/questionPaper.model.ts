@@ -3,7 +3,7 @@ import { TMCQ, TQuestionPaper } from "./questionPaper.interface";
 import { ExamineeModel } from "../examine/examinee.model";
 
 const TMCQSchema: Schema = new Schema({
-  qid: {
+  QPid: {
     type: mongoose.Types.ObjectId,
     ref: "QuestionPaper",
     required: true,
@@ -49,7 +49,7 @@ const questionPaperSchema = new Schema<TQuestionPaper>(
       ref: "Exam",
       required: true,
     },
-    qid: {
+    id: {
       type: String,
       required: true,
     },
