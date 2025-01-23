@@ -7,7 +7,7 @@ import { UserModel } from "../user/user.model"
 import authUtill from "./auth.utill"
 
 const logIn = async (email: string, password: string) => {
-    const findUserWithEmail = await UserModel.findOne({ email: email })
+    const findUserWithEmail = await UserModel.findOne({ email: email }).select("+password")
     if (!findUserWithEmail) {
         throw Error("no user found with this email")
     }
@@ -24,7 +24,7 @@ const logIn = async (email: string, password: string) => {
         {
             new: true
         }
-    ).select("+password")
+    )
     if (!findUserWithEmail) {
         throw Error("no; user found with this email")
     }
