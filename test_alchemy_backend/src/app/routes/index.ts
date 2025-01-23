@@ -3,6 +3,7 @@ import authRouter from "../modules/auth/auth.routes";
 import candidateRouter from "../modules/candidate/candidate.routes";
 import examineRoutes from "../modules/examine/examine.routes";
 import userRoutes from "../modules/user/user.route";
+import questionPaperRoutes from "../modules/questionPaper/questionpaper.route";
 import examRoute from "../modules/exam/exam.route";
 
 const Routes = express.Router();
@@ -26,6 +27,10 @@ const moduleRouts = [
     router: candidateRouter,
   },
   {
+    path: "/questionPaper",
+    router: questionPaperRoutes,
+  },
+  {
     path: "/exam",
     router: examRoute
   }
@@ -33,8 +38,8 @@ const moduleRouts = [
 
 // Register each route in moduleRouts
 moduleRouts.forEach(({ path, router }) => {
-    // console.log("path:",path,router)
-    Routes.use(path, router);
+  // console.log("path:",path,router)
+  Routes.use(path, router);
 });
 
 // Export the router

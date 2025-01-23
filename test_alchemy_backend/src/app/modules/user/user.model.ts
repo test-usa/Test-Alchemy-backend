@@ -1,12 +1,13 @@
 import { model, Schema } from "mongoose";
 import { TUser } from "./user.interface";
 import bcrypt from "bcrypt";
+import { CandidateModel } from "../candidate/candidate.model";
+import { ExamineeModel } from "../examine/examinee.model";
 
 const userSchema = new Schema<TUser>(
   {
     id: {
       type: String,
-      required: true,
     },
     firstName: {
       type: String,
@@ -22,6 +23,7 @@ const userSchema = new Schema<TUser>(
     },
     password: {
       type: String,
+      select: false,
       required: true,
     },
     domain: {
@@ -59,6 +61,21 @@ userSchema.pre("save", async function (next) {
   const hashedPass = await bcrypt.hash(this.password as string, 6);
   this.password = hashedPass;
   next();
+});
+
+userSchema.post("save", async function () {
+  if (this.userType === "candidate") {
+    await CandidateModel.create({
+      uid: this._id,
+      examSet: [],
+    });
+  }
+  if (this.userType === "examinee") {
+    await ExamineeModel.create({
+      uid: this._id,
+      questionPapers: [],
+    });
+  }
 });
 
 userSchema.pre("findOneAndUpdate", async function (next) {

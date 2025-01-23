@@ -8,7 +8,9 @@ const candidateSchema = new Schema<TCandidate>({
     required: true,
   },
   examSet: {
-    type: String,
+    type: [Schema.Types.ObjectId],
+    ref: "Exam",
+    required: true,
   },
 });
 

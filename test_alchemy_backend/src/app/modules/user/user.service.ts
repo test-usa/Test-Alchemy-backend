@@ -1,20 +1,21 @@
-import { TUser } from "./user.interface";
+import { idFor } from "../../constents";
+import collectionIdGenerator from "../../util/idGenarator";
+import { TUser, TUserUpdateData } from "./user.interface";
 import { UserModel } from "./user.model";
 
 export const createUserIntoDB = async (payload: TUser) => {
+  const gid = await collectionIdGenerator(UserModel as any, idFor.candidate);
   const isUserExist = await UserModel.findOne({
-    id: payload.id,
     email: payload.email,
     isDeleted: false,
   });
-
   if (isUserExist) {
     throw new Error("User already exist");
   }
-
-  const result = await UserModel.create(payload);
+  const result = await UserModel.create({ ...payload, id: gid });
   return result;
 };
+
 export const getSingleUserFromDB = async (id: string) => {
   const isUserExist = await UserModel.findOne({
     id,
@@ -32,7 +33,10 @@ export const getAllUserFromDB = async () => {
   return result;
 };
 
-export const updateUserIntoDB = async (id: string, payload: any) => {
+export const updateUserIntoDB = async (
+  id: string,
+  payload: TUserUpdateData
+) => {
   const isUserExist = await UserModel.findOne({
     id,
     isDeleted: false,

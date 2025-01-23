@@ -24,6 +24,6 @@ export const endExamController = catchAsync(async (req, res) => {
         message: "Exam updated successfully",
         success: true,
         status: 200,
-        body: req.body,
+        body: result,
     })
 })
