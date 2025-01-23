@@ -24,7 +24,7 @@ const logIn = async (email: string, password: string) => {
         {
             new: true
         }
-    )
+    ).select("+password")
     if (!findUserWithEmail) {
         throw Error("no; user found with this email")
     }
