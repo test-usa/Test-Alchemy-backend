@@ -15,7 +15,7 @@ import { userRole } from "../../constents";
 const router = express.Router();
 
 router.post("/start", auth(userRole.candidate), validator(StartExamSchema), startExamController)
-router.post("/end", auth(userRole.candidate), validator(EndExamSchema), endExamController)
+router.post("/submit", auth(userRole.candidate), validator(EndExamSchema), endExamController)
 
 
 const examRoute = router

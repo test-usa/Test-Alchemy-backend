@@ -5,6 +5,7 @@ export const startExam = async (payload: object) => {
 }
 
 export const endExam = async (payload: object, id:string) => {
+    
     return examModel.updateOne({
         id
     },payload)
