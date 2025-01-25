@@ -34,6 +34,7 @@ export const createQuestionPaper = async (examineeId: string, payload: TQuestion
   payload.id = questionPaperId;
   payload.examineeId = examineeId;
   const result = await QuestionPaperModel.create(payload);
+  await questionPaperUtil.totalMarksCalculator(questionPaperId);
   return result;
 };
 
