@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const userValidationSchema = z.object({
+const userValidationSchema = z.object({
   body: z.object({
     firstName: z.string(),
     lastName: z.string(),
@@ -15,7 +15,7 @@ export const userValidationSchema = z.object({
   }),
 });
 
-export const userUpdateValidationSchema = z.object({
+const userUpdateValidationSchema = z.object({
   body: z.object({
     firstName: z.string().optional(),
     lastName: z.string().optional(),
@@ -25,3 +25,8 @@ export const userUpdateValidationSchema = z.object({
     userType: z.enum(["candidate", "examinee", "admin"]).optional(),
   }),
 });
+
+const userValidation = {
+  userValidationSchema,userUpdateValidationSchema
+}
+ export default userValidation

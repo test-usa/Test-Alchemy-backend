@@ -1,10 +1,13 @@
 import { idFor } from "../../constents";
-import collectionIdGenerator from "../../util/idGenarator";
+import idGenerator from "../../util/idGenarator";
 import { TUser, TUserUpdateData } from "./user.interface";
 import { UserModel } from "./user.model";
 
-export const createUserIntoDB = async (payload: TUser) => {
-  const gid = await collectionIdGenerator(UserModel as any, idFor.candidate);
+const createUser = async (payload: TUser) => {
+  // const gid = await idGenerator.collectionIdGenerator(UserModel,idFor.candidate)
+
+  console.log("payload", payload);
+
   const isUserExist = await UserModel.findOne({
     email: payload.email,
     isDeleted: false,
@@ -12,11 +15,11 @@ export const createUserIntoDB = async (payload: TUser) => {
   if (isUserExist) {
     throw new Error("User already exist");
   }
-  const result = await UserModel.create({ ...payload, id: gid });
+  const result = await UserModel.create({ ...payload, id: "123" });
   return result;
 };
 
-export const getSingleUserFromDB = async (id: string) => {
+const getSingleUser = async (id: string) => {
   const isUserExist = await UserModel.findOne({
     id,
     isDeleted: false,
@@ -28,15 +31,12 @@ export const getSingleUserFromDB = async (id: string) => {
   return result;
 };
 
-export const getAllUserFromDB = async () => {
+const getAllUser = async () => {
   const result = await UserModel.find({ isDeleted: false });
   return result;
 };
 
-export const updateUserIntoDB = async (
-  id: string,
-  payload: TUserUpdateData
-) => {
+const updateUser = async (id: string, payload: TUserUpdateData) => {
   const isUserExist = await UserModel.findOne({
     id,
     isDeleted: false,
@@ -50,7 +50,16 @@ export const updateUserIntoDB = async (
   return result;
 };
 
-export const deleteUserFromDB = async (id: string) => {
+const deleteUser = async (id: string) => {
   const result = await UserModel.updateOne({ id }, { isDeleted: true });
   return result;
 };
+
+const userServices = {
+  createUser,
+  updateUser,
+  getSingleUser,
+  getAllUser,
+  deleteUser,
+};
+export default userServices;

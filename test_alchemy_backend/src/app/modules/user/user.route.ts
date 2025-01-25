@@ -1,27 +1,16 @@
 import express from "express";
-import {
-  createUser,
-  deleteUser,
-  getAllUser,
-  getSingleUser,
-  updateUser,
-} from "./user.controller";
 import validator from "../../util/validator";
-import {
-  userUpdateValidationSchema,
-  userValidationSchema,
-} from "./user.validation";
-import auth from "../../middlewares/auth";
-import { userRole } from "../../constents";
+import userController from "./user.controller";
+import userValidation from "./user.validation";
+// import auth from "../../middlewares/auth";
+// import { userRole } from "../../constents";
+const userRoutes = express.Router();
 
-const router = express.Router();
-
-router.get("/", getAllUser);
-router.get("/:id", getSingleUser);
-router.post("/", validator(userValidationSchema), createUser);
-router.patch("/:id", validator(userUpdateValidationSchema), updateUser);
-router.delete("/:id", deleteUser);
-
-const userRoutes = router;
+userRoutes.get("/getAllUser", userController.getAllUser);
+userRoutes.get("/getSingleUser/:id", userController.getSingleUser);
+userRoutes.post("/createExaminee", validator(userValidation.userValidationSchema), userController.createUser);
+userRoutes.post("/createCandidate",validator(userValidation.userValidationSchema),userController.createUser);
+userRoutes.patch("/updateUser/:id",validator(userValidation.userUpdateValidationSchema),userController.updateUser);
+userRoutes.delete("/deleteUser/:id", userController.deleteUser);
 
 export default userRoutes;
