@@ -1,20 +1,26 @@
 import { Model, Query } from "mongoose";
-import { TIdFor } from "../constents";
 import { QuestionPaperModel } from "../modules/questionPaper/questionPaper.model";
 
 
+// Utility function to enforce Document compatibility
+const asDocumentModel = <T>(model: Model<T>): Model<T & Document> => {
+    return model as Model<T & Document>;
+};
+
+// Utility function to generate IDs for collections
+
 const collectionIdGenerator = async <T extends Document>(
-    model: Model<T>, // Accepts a Mongoose model
-    idFor: TIdFor // The type of ID to generate
+    model: Model<T>, // Accept a Mongoose model
+    idFor: string // The type of ID to generate
 ): Promise<string> => {
     const prefix = idFor.substring(0, 3).toUpperCase(); // Prefix from idFor
 
     try {
-        // Fetch the last record based on the `type` field
+        // Fetch the last record sorted by `id` in descending order
         const lastRecord = await model
-            .findOne()
-            .sort({ id: -1 })
-            .exec();
+            .findOne() // Create a query
+            .sort({ id: -1 }) // Sort by `id` in descending order
+            .exec(); // Execute the query
 
         let newId: string;
 
@@ -36,6 +42,10 @@ const collectionIdGenerator = async <T extends Document>(
     }
 };
 
+
+
+
+
 const mcqIdGenerator= async (QPId:string) : Promise<string>=>{
     const questionPaper = await QuestionPaperModel.findOne({id:QPId})
     const mcqSetLength = questionPaper?.MCQSet.length
@@ -44,7 +54,7 @@ const mcqIdGenerator= async (QPId:string) : Promise<string>=>{
 
 
 const idGenerator= {
-    collectionIdGenerator,mcqIdGenerator
+    collectionIdGenerator,mcqIdGenerator,asDocumentModel
 }
 
 export default idGenerator

@@ -1,10 +1,33 @@
+import { ClientSession, startSession } from "mongoose";
 import { idFor } from "../../constents";
 import idGenerator from "../../util/idGenarator";
+import { CandidateModel } from "../candidate/candidate.model";
+import { ExamineeModel } from "../examine/examinee.model";
 import { TUser, TUserUpdateData } from "./user.interface";
 import { UserModel } from "./user.model";
 
 const createUser = async (payload: TUser) => {
-  // const gid = await idGenerator.collectionIdGenerator(UserModel,idFor.candidate)
+
+
+  // make id generator for candidate,examinee,admin
+  switch (payload.userType) {
+    case "candidate":
+      const convertCandidateModel = idGenerator.asDocumentModel(CandidateModel)
+      payload.id = await idGenerator.collectionIdGenerator(convertCandidateModel, idFor.candidate)
+      break;
+    case "examinee":
+      const convertExamineeModel = idGenerator.asDocumentModel(ExamineeModel)
+      payload.id = await idGenerator.collectionIdGenerator(convertExamineeModel, idFor.examinee)
+      break;
+    case "admin":
+      const convertAdminModel = idGenerator.asDocumentModel(UserModel)
+      payload.id = await idGenerator.collectionIdGenerator(convertAdminModel, idFor.admin);
+      break;
+    default:
+      return null;
+  }
+
+
 
   console.log("payload", payload);
 
@@ -15,8 +38,33 @@ const createUser = async (payload: TUser) => {
   if (isUserExist) {
     throw new Error("User already exist");
   }
-  const result = await UserModel.create({ ...payload, id: "123" });
-  return result;
+
+  let createExamineeOrCandidate;
+
+  const session: ClientSession = await startSession(); // Start the session
+  session.startTransaction(); // Begin transaction
+
+
+  try {
+    const createUser = await UserModel.create([payload], { session });
+    if (payload.userType === "candidate") {
+      createExamineeOrCandidate = CandidateModel.create([payload], { session });
+    }
+    else if (payload.userType === "examinee") {
+      createExamineeOrCandidate = ExamineeModel.create([payload], { session });
+    }
+    await session.commitTransaction(); // Commit the transaction
+
+    return { createUser, createExamineeOrCandidate };
+  } catch (error: any) {
+    await session.abortTransaction(); // Rollback the transaction
+    console.log("error", error);
+    throw new Error(error);
+  }
+  finally {
+    session.endSession();
+  }
+
 };
 
 const getSingleUser = async (id: string) => {
