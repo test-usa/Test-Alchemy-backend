@@ -1,16 +1,22 @@
 import { ExamineeModel } from "./examinee.model";
 
-export const addQuestionPaperInExamineeDocument = async (uid: string) => {
+ const addQuestionPaperInExamineeDocument = async (uid: string) => {
   const result = await ExamineeModel.updateOne({ uid });
   return result;
 };
 
-export const updateQuestionPaperInExamineeDocument = () => {
+ const updateQuestionPaperInExamineeDocument = () => {
   const result = "";
   return result;
 };
 
-export const deleteQuestionPaperInExamineeDocument = () => {
+ const deleteQuestionPaperInExamineeDocument = () => {
   const result = "";
   return result;
 };
+
+const examineeServices ={
+  addQuestionPaperInExamineeDocument,updateQuestionPaperInExamineeDocument,deleteQuestionPaperInExamineeDocument
+}
+
+export default examineeServices

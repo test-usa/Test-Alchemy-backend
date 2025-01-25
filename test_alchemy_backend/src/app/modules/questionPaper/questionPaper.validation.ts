@@ -1,23 +1,30 @@
 import { z } from "zod";
 import { Types } from "mongoose";
 
+// MCQ Schema
 const TMCQSchema = z.object({
-  qid: z.string(),
-  mcqId: z.string(),
+  QPid: z.string().optional(),
+  mcqId: z.string().optional(),
   question: z.string(),
-  options: z.array(z.string()).nonempty(),
-  correctAns: z.enum([0, 1, 2, 3]),
+  options: z
+    .array(z.string())
+    .nonempty({ message: "MCQ options must not be empty" }) // Added message for empty options
+    .min(2, { message: "MCQ options must have at least two options" }),
+  correctAns: z.number().refine((val) => [0, 1, 2, 3].includes(val)),
   mark: z.number().min(1, "Mark must be greater than 0"),
 });
 
+// Question Paper Schema
 export const TQuestionPaperSchema = z.object({
-  qid: z.string(),
-  domain: z.string(),
-  examineeId: z.custom<Types.ObjectId>((val) => Types.ObjectId.isValid(val), {
-    message: "Invalid ObjectId format",
+  body: z.object({
+    id: z.string().optional(),
+    domain: z.string().nonempty({ message: "Domain must not be empty" }), // Added validation for non-empty domain
+    examineeId: z.string().optional(),
+    duration: z.number().min(1, "Duration must be a positive number"),
+    totalMarks: z.number().optional(),
+    MCQSet: z
+      .array(TMCQSchema) // Ensure this is an array of TMCQSchema objects
+      .nonempty({ message: "Question paper must have at least one question" }),
+    isDeleted: z.boolean().default(false),
   }),
-  duration: z.number().min(1, "Duration must be a positive number"),
-  totalMarks: z.number().optional().min(0, "Total marks cannot be negative"),
-  MCQSet: z.array(TMCQSchema).nonempty("The MCQ set cannot be empty"),
-  isDeleted: z.boolean(),
 });

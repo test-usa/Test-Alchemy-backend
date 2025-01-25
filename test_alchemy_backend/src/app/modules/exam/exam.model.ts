@@ -3,7 +3,7 @@ import { ExamType } from "./exam.interface";
 
 
 const answerSheetSchema = new Schema({
-    qId: { type: String, required: true },
+    mcqId: { type: String, required: true },
     answer: { type: Number, required: true }
 });
 
@@ -46,6 +46,11 @@ const examSchema = new Schema<ExamType>({
         type: String,
         required: true,
         unique: true
+    },
+    id:{
+        type: String,
+        required: true,
+        unique: true,
     }
 }, {
     timestamps: true

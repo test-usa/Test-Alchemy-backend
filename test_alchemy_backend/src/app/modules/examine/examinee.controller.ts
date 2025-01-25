@@ -1,12 +1,9 @@
 import catchAsync from "../../util/catchAsync";
-import {
-  addQuestionPaperInExamineeDocument,
-  deleteQuestionPaperInExamineeDocument,
-  updateQuestionPaperInExamineeDocument,
-} from "./examinee.service";
+import examineeServices from "./examinee.service";
+
 
 export const addQuestionPaper = catchAsync(async (req, res) => {
-  const result = addQuestionPaperInExamineeDocument();
+  const result = await examineeServices.addQuestionPaperInExamineeDocument()
   res.status(200).json({
     message: "Exam successfully",
     status: 200,
@@ -15,7 +12,7 @@ export const addQuestionPaper = catchAsync(async (req, res) => {
 });
 
 export const updateQuestionPaper = catchAsync(async (req, res) => {
-  const result = updateQuestionPaperInExamineeDocument();
+  const result = await examineeServices.updateQuestionPaperInExamineeDocument()
   res.status(200).json({
     message: "Exam updated successfully",
     status: 200,
@@ -24,7 +21,7 @@ export const updateQuestionPaper = catchAsync(async (req, res) => {
 });
 
 export const deleteQuestionPaper = catchAsync(async (req, res) => {
-  const result = deleteQuestionPaperInExamineeDocument();
+  const result = await examineeServices.deleteQuestionPaperInExamineeDocument();
   res.status(200).json({
     message: "Exam deleted successfully",
     status: 200,

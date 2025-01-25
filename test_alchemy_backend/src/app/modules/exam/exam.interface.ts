@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
 export interface ExamType {
+    id: string,
     questionPaperId: String,
     candidId: String
     isSubmitted: boolean,
@@ -9,7 +10,7 @@ export interface ExamType {
     endTime: Date,
     isDeleted: boolean,
     answerSheet: {
-        qId: string,
+        mcqId: string,
         answer: number
     }[]
 }

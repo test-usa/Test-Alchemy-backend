@@ -1,26 +1,28 @@
 import express from "express";
-import {
-  createQuestionPaper,
-  deleteQuestionPaper,
-  getAllQuestionPaper,
-  getQuestionPapersOfExaminee,
-  getSingleQuestionPaper,
-  updateQuestionPaper,
-} from "./questionPaper.controller";
 import auth from "../../middlewares/auth";
+import { userRole } from "../../constents";
+import validator from "../../util/validator";
+import { TQuestionPaperSchema } from "./questionPaper.validation";
+import questionPaperController from "./questionPaper.controller";
 
 const router = express.Router();
 
-router.get("/", getAllQuestionPaper);
+router.get("/", questionPaperController.getAllQuestionPaper);
+
 router.get(
   "/examinee/:examineeId",
-  auth("examinee"),
-  getQuestionPapersOfExaminee
+  auth(userRole.examinee),
+  questionPaperController.getQuestionPapersOfExaminee
 );
-router.get("/single/:qid", getSingleQuestionPaper);
-router.post("/", auth("examinee"), createQuestionPaper);
-router.patch("/:qid", auth("examinee"), updateQuestionPaper);
-router.delete("/:qid", auth("examinee"), deleteQuestionPaper);
+
+router.get("/single/:qid", questionPaperController.getSingleQuestionPaper);
+
+
+router.post("/createQuestionPaper",auth("examinee"),validator(TQuestionPaperSchema),questionPaperController.createQuestionPaper);
+
+
+router.patch("/:qid", auth("examinee"), questionPaperController.updateQuestionPaper);
+router.delete("/:qid", auth("examinee"), questionPaperController.deleteQuestionPaper);
 
 const questionPaperRoutes = router;
 

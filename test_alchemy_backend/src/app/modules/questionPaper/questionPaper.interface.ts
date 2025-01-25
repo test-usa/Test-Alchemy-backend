@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
 
 export type TQuestionPaper = {
-  qid: string;
+  id: string;
   domain: string;
-  examineeId: Types.ObjectId;
+  examineeId: string;
   duration: number;
   totalMarks?: number;
   MCQSet: TMCQ[];
@@ -11,7 +11,7 @@ export type TQuestionPaper = {
 };
 
 export type TMCQ = {
-  qid: string;
+  QPid: string;
   mcqId: string;
   question: string;
   options: string[];

@@ -9,13 +9,13 @@ export const startExam = z.object({
 })
 
 export const endExam = z.object({
-    body:z.object({
+    body: z.object({
         id: z.string().min(1),
         endTime: z.string().min(1),
         isSubmitted: z.boolean(),
         answerSheet: z.array(z.object({
-                qid: z.string(),
-                answer: z.string()
+            mcqId: z.string(),
+            answer: z.number()
         }))
     })
 })

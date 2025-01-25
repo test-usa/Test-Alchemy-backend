@@ -1,5 +1,5 @@
 export type TUserRole = "candidate" | "examinee" | "admin";
-export type TIdFor= "candidate" | "examinee" | "admin"|"questionPaper";
+export type TIdFor= "candidate" | "examinee" | "admin"|"questionPaper"|"exam";
 
 
 export const userRole = {
@@ -12,5 +12,6 @@ export const idFor = {
     "candidate": "candidate",
     "examinee": "examinee",
     "admin": "admin",
-    "questionPaper":"questionPaper"
+    "questionPaper":"questionPaper",
+    "exam":"exam"
 } as const

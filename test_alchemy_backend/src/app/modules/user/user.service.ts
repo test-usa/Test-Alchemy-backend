@@ -1,10 +1,19 @@
+import { ClientSession, startSession } from "mongoose";
 import { idFor } from "../../constents";
-import collectionIdGenerator from "../../util/idGenarator";
+import idGenerator from "../../util/idGenarator";
+import { CandidateModel } from "../candidate/candidate.model";
+import { ExamineeModel } from "../examine/examinee.model";
 import { TUser, TUserUpdateData } from "./user.interface";
 import { UserModel } from "./user.model";
 
-export const createUserIntoDB = async (payload: TUser) => {
-  const gid = await collectionIdGenerator(UserModel as any, idFor.candidate);
+const createUser = async (payload: TUser) => {
+  // make id generator for candidate,examinee,admin
+  const uId = await idGenerator.generateId(payload.userType);
+
+  payload.id = uId as string;
+  
+  console.log("payload", payload);
+
   const isUserExist = await UserModel.findOne({
     email: payload.email,
     isDeleted: false,
@@ -12,11 +21,42 @@ export const createUserIntoDB = async (payload: TUser) => {
   if (isUserExist) {
     throw new Error("User already exist");
   }
-  const result = await UserModel.create({ ...payload, id: gid });
-  return result;
+
+  const session: ClientSession = await startSession(); // Start the session
+  session.startTransaction(); // Begin transaction
+
+  try {
+    // Create the user in the User model
+    const createUser = await UserModel.create([payload], { session });
+
+    // Declare a variable to hold the create promise for Candidate/Examinee
+    let createExamineeOrCandidate;
+
+    if (payload.userType === "candidate") {
+      // Ensure the correct fields are passed to the Candidate model
+      createExamineeOrCandidate = CandidateModel.create([{ uid: payload.id }], { session });
+    } else if (payload.userType === "examinee") {
+      // Ensure the correct fields are passed to the Examinee model
+      createExamineeOrCandidate = ExamineeModel.create([{ uid: payload.id }], { session });
+    }
+
+    // Await the result for the candidate/examinee creation
+    await createExamineeOrCandidate;
+
+    // Commit the transaction after both User and related models are created
+    await session.commitTransaction(); // Commit the transaction
+
+    return { createUser, createExamineeOrCandidate };
+  } catch (error: any) {
+    await session.abortTransaction(); // Rollback the transaction
+    console.log("error", error);
+    throw new Error(error);
+  } finally {
+    session.endSession();
+  }
 };
 
-export const getSingleUserFromDB = async (id: string) => {
+const getSingleUser = async (id: string) => {
   const isUserExist = await UserModel.findOne({
     id,
     isDeleted: false,
@@ -28,15 +68,12 @@ export const getSingleUserFromDB = async (id: string) => {
   return result;
 };
 
-export const getAllUserFromDB = async () => {
+const getAllUser = async () => {
   const result = await UserModel.find({ isDeleted: false });
   return result;
 };
 
-export const updateUserIntoDB = async (
-  id: string,
-  payload: TUserUpdateData
-) => {
+const updateUser = async (id: string, payload: TUserUpdateData) => {
   const isUserExist = await UserModel.findOne({
     id,
     isDeleted: false,
@@ -50,7 +87,16 @@ export const updateUserIntoDB = async (
   return result;
 };
 
-export const deleteUserFromDB = async (id: string) => {
+const deleteUser = async (id: string) => {
   const result = await UserModel.updateOne({ id }, { isDeleted: true });
   return result;
 };
+
+const userServices = {
+  createUser,
+  updateUser,
+  getSingleUser,
+  getAllUser,
+  deleteUser,
+};
+export default userServices;

@@ -6,10 +6,14 @@ import { UserModel } from "../user/user.model";
 import authUtill from "./auth.utill";
 
 const logIn = async (email: string, password: string) => {
-  const findUserWithEmail = await UserModel.findOne({ email: email });
+  const findUserWithEmail = await UserModel.findOne({ email: email }).select(
+    "+password"
+  );
+
   if (!findUserWithEmail) {
     throw Error("no user found with this email");
   }
+
   const match = await bcrypt.compare(password, findUserWithEmail.password);
   if (!match) {
     throw Error("password is not matched");
@@ -17,13 +21,10 @@ const logIn = async (email: string, password: string) => {
 
   const findUserAndUpdate = await UserModel.findOneAndUpdate(
     { email: email },
-    {
-      isLoggedIn: true,
-    },
-    {
-      new: true,
-    }
+    { isLoggedIn: true },
+    { new: true }
   );
+
   if (!findUserWithEmail) {
     throw Error("no; user found with this email");
   }
