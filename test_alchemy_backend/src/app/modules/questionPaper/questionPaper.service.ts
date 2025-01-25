@@ -1,14 +1,16 @@
+import { idFor } from "../../constents";
+import idGenerator from "../../util/idGenarator";
 import { TQuestionPaper } from "./questionPaper.interface";
 import { QuestionPaperModel } from "./questionPaper.model";
 
 // candidate
-export const getAllQuestionPaperFromDB = async () => {
+export const getAllQuestionPaper = async () => {
   const result = await QuestionPaperModel.find({ isDeleted: false });
   return result;
 };
 
 // examinee
-export const getAllQuestionPaperByExamineeId = async (examineeId: string) => {
+export const getQuestionPapersOfExaminee = async (examineeId: string) => {
   console.log(examineeId);
   const result = await QuestionPaperModel.find({
     examineeId,
@@ -18,19 +20,26 @@ export const getAllQuestionPaperByExamineeId = async (examineeId: string) => {
 };
 
 // candidate
-export const getSingleQuestionPaperFromDB = async (qid: string) => {
+export const getSingleQuestionPaper = async (qid: string) => {
   const result = await QuestionPaperModel.findOne({ qid, isDeleted: false });
   return result;
 };
 
 // examinee
-export const createQuestionPaperIntoDB = async (payload: TQuestionPaper) => {
-  const result = await QuestionPaperModel.create(payload);
-  return result;
+export const createQuestionPaper = async (examineeId:string ,payload: TQuestionPaper) => {
+  const modifiedQuestionPaperModel = idGenerator.asDocumentModel(QuestionPaperModel);
+  const questionPaperId = await idGenerator.collectionIdGenerator( modifiedQuestionPaperModel, idFor.questionPaper);
+
+  
+
+  payload.id = questionPaperId;
+  payload.examineeId = examineeId;
+    // const result = await QuestionPaperModel.create(payload);
+  // return result;
 };
 
 // examinee
-export const updateQuestionPaperIntoDB = async (
+export const updateQuestionPaper = async (
   qid: string,
   payload: object
 ) => {
@@ -43,10 +52,15 @@ export const updateQuestionPaperIntoDB = async (
 };
 
 // examinee
-export const deleteQuestionPaperIntoDB = async (qid: string) => {
+export const deleteQuestionPaper = async (qid: string) => {
   const result = await QuestionPaperModel.updateOne(
     { qid, isDeleted: false },
     { isDeleted: true }
   );
   return result;
 };
+
+const questionPaperService = {
+  getAllQuestionPaper,getQuestionPapersOfExaminee,deleteQuestionPaper,updateQuestionPaper,createQuestionPaper,getSingleQuestionPaper
+}
+export default questionPaperService;
