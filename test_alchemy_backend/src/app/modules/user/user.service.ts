@@ -48,10 +48,10 @@ const createUser = async (payload: TUser) => {
   try {
     const createUser = await UserModel.create([payload], { session });
     if (payload.userType === "candidate") {
-      createExamineeOrCandidate = CandidateModel.create([payload], { session });
+      createExamineeOrCandidate = CandidateModel.create([{uid:payload.id}], { session });
     }
     else if (payload.userType === "examinee") {
-      createExamineeOrCandidate = ExamineeModel.create([payload], { session });
+      createExamineeOrCandidate = ExamineeModel.create([{uid:payload.id}], { session });
     }
     await session.commitTransaction(); // Commit the transaction
 
