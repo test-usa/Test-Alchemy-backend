@@ -13,11 +13,24 @@ userRoutes.get("/getAllUser", userController.getAllUser);
 userRoutes.get("/getSingleUser/:id", userController.getSingleUser);
 
 // crerate user
-userRoutes.post("/createExaminee",auth(userRole.admin), validator(userValidation.userValidationSchema), userController.createUser);
-userRoutes.post("/createCandidate",validator(userValidation.userValidationSchema),userController.createUser);
+userRoutes.post(
+  "/createExaminee",
+  auth(userRole.admin),
+  validator(userValidation.userValidationSchema),
+  userController.createUser
+);
+userRoutes.post(
+  "/createCandidate",
+  validator(userValidation.userValidationSchema),
+  userController.createUser
+);
 
 // update user
-userRoutes.patch("/updateUser/:id",validator(userValidation.userUpdateValidationSchema),userController.updateUser);
+userRoutes.patch(
+  "/updateUser/:id",
+  validator(userValidation.userUpdateValidationSchema),
+  userController.updateUser
+);
 userRoutes.delete("/deleteUser/:id", userController.deleteUser);
 
 export default userRoutes;

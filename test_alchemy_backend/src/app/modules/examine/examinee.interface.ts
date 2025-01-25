@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 
 export type TExaminee = {
-  uid: Types.ObjectId;
+  uid: String;
   questionPapers: [Types.ObjectId];
 };

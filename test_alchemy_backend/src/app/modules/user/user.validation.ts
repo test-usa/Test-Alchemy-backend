@@ -27,6 +27,7 @@ const userUpdateValidationSchema = z.object({
 });
 
 const userValidation = {
-  userValidationSchema,userUpdateValidationSchema
-}
- export default userValidation
+  userValidationSchema,
+  userUpdateValidationSchema,
+};
+export default userValidation;
