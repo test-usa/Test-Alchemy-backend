@@ -2,10 +2,14 @@ import mongoose, { model, Schema } from "mongoose";
 import { TMCQ, TQuestionPaper } from "./questionPaper.interface";
 import { ExamineeModel } from "../examine/examinee.model";
 
-const TMCQSchema: Schema = new Schema({
+const TMCQSchema: Schema = new Schema<TMCQ>({
   QPid: {
-    type: mongoose.Types.ObjectId,
+    type: String,
     ref: "QuestionPaper",
+    required: true,
+  },
+  mcqId: {
+    type: String,
     required: true,
   },
   question: {
@@ -43,10 +47,10 @@ const questionPaperSchema = new Schema<TQuestionPaper>(
     MCQSet: {
       type: [TMCQSchema],
       required: true,
+      default: [],
     },
     examineeId: {
-      type: Schema.Types.ObjectId,
-      ref: "Exam",
+      type: String,
       required: true,
     },
     id: {
@@ -66,7 +70,7 @@ const questionPaperSchema = new Schema<TQuestionPaper>(
 
 questionPaperSchema.post("save", async function () {
   await ExamineeModel.updateOne(
-    { uid: this.qid },
+    { uid: this.id },
     {
       $push: {
         questionPapers: [],

@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 export type TQuestionPaper = {
   id: string;
   domain: string;
-  examineeId: Types.ObjectId;
+  examineeId: string;
   duration: number;
   totalMarks?: number;
   MCQSet: TMCQ[];
