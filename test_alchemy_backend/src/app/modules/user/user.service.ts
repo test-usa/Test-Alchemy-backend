@@ -7,27 +7,32 @@ import { TUser, TUserUpdateData } from "./user.interface";
 import { UserModel } from "./user.model";
 
 const createUser = async (payload: TUser) => {
-
-
   // make id generator for candidate,examinee,admin
   switch (payload.userType) {
     case "candidate":
-      const convertCandidateModel = idGenerator.asDocumentModel(CandidateModel)
-      payload.id = await idGenerator.collectionIdGenerator(convertCandidateModel, idFor.candidate)
+      const convertCandidateModel = idGenerator.asDocumentModel(CandidateModel);
+      payload.id = await idGenerator.collectionIdGenerator(
+        convertCandidateModel,
+        idFor.candidate
+      );
       break;
     case "examinee":
-      const convertExamineeModel = idGenerator.asDocumentModel(ExamineeModel)
-      payload.id = await idGenerator.collectionIdGenerator(convertExamineeModel, idFor.examinee)
+      const convertExamineeModel = idGenerator.asDocumentModel(ExamineeModel);
+      payload.id = await idGenerator.collectionIdGenerator(
+        convertExamineeModel,
+        idFor.examinee
+      );
       break;
     case "admin":
-      const convertAdminModel = idGenerator.asDocumentModel(UserModel)
-      payload.id = await idGenerator.collectionIdGenerator(convertAdminModel, idFor.admin);
+      const convertAdminModel = idGenerator.asDocumentModel(UserModel);
+      payload.id = await idGenerator.collectionIdGenerator(
+        convertAdminModel,
+        idFor.admin
+      );
       break;
     default:
       return null;
   }
-
-
 
   console.log("payload", payload);
 
@@ -44,14 +49,16 @@ const createUser = async (payload: TUser) => {
   const session: ClientSession = await startSession(); // Start the session
   session.startTransaction(); // Begin transaction
 
-
   try {
     const createUser = await UserModel.create([payload], { session });
     if (payload.userType === "candidate") {
-      createExamineeOrCandidate = CandidateModel.create([payload], { session });
-    }
-    else if (payload.userType === "examinee") {
-      createExamineeOrCandidate = ExamineeModel.create([payload], { session });
+      createExamineeOrCandidate = CandidateModel.create([{ uid: payload.id }], {
+        session,
+      });
+    } else if (payload.userType === "examinee") {
+      createExamineeOrCandidate = ExamineeModel.create([{ uid: payload.id }], {
+        session,
+      });
     }
     await session.commitTransaction(); // Commit the transaction
 
@@ -60,11 +67,9 @@ const createUser = async (payload: TUser) => {
     await session.abortTransaction(); // Rollback the transaction
     console.log("error", error);
     throw new Error(error);
-  }
-  finally {
+  } finally {
     session.endSession();
   }
-
 };
 
 const getSingleUser = async (id: string) => {

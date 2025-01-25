@@ -63,20 +63,21 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.post("save", async function () {
-  if (this.userType === "candidate") {
-    await CandidateModel.create({
-      uid: this._id,
-      examSet: [],
-    });
-  }
-  if (this.userType === "examinee") {
-    await ExamineeModel.create({
-      uid: this._id,
-      questionPapers: [],
-    });
-  }
-});
+// userSchema.post("save", async function () {
+//   if (this.userType === "candidate") {
+//     console.log(this.id);
+//     await CandidateModel.create({
+//       uid: this.id,
+//       examSet: [],
+//     });
+//   }
+//   if (this.userType === "examinee") {
+//     await ExamineeModel.create({
+//       uid: this.id,
+//       questionPapers: [],
+//     });
+//   }
+// });
 
 userSchema.pre("findOneAndUpdate", async function (next) {
   console.log(this);
