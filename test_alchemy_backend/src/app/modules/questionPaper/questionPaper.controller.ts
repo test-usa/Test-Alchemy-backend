@@ -63,6 +63,18 @@ const addMCQIntoQuestionPaper = catchAsync(async (req, res) => {
     body: result,
   });
 });
+const removeMCQFromQuestionPaper = catchAsync(async (req, res) => {
+  const result = await questionPaperService.removeMCQFromQuestionPaper(
+    req.query.id as string,
+    req.query.mcqId as string
+  );
+  res.status(200).json({
+    message: "MCQ removed from question paper successfully",
+    success: true,
+    status: 200,
+    body: result,
+  });
+});
 
 const updateQuestionPaper = catchAsync(async (req, res) => {
   const result = await questionPaperService.updateQuestionPaper(
@@ -95,5 +107,6 @@ const questionPaperController = {
   updateQuestionPaper,
   deleteQuestionPaper,
   addMCQIntoQuestionPaper,
+  removeMCQFromQuestionPaper,
 };
 export default questionPaperController;

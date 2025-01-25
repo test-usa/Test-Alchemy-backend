@@ -25,7 +25,7 @@ router.post(
 );
 
 router.patch(
-  "/:qid",
+  "/updateQuestionPaper/:qid",
   auth("examinee"),
   questionPaperController.updateQuestionPaper
 );
@@ -33,6 +33,11 @@ router.patch(
   "/addNewMCQ/:qid",
   auth("examinee"),
   questionPaperController.addMCQIntoQuestionPaper
+);
+router.patch(
+  "/removeMCQ",
+  auth("examinee"),
+  questionPaperController.removeMCQFromQuestionPaper
 );
 router.delete(
   "/:qid",

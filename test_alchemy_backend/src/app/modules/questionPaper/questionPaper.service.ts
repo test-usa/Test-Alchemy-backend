@@ -44,6 +44,7 @@ export const createQuestionPaper = async (
   payload.id = questionPaperId;
   payload.examineeId = examineeId;
   const result = await QuestionPaperModel.create(payload);
+  await questionPaperUtil.totalMarksCalculator(questionPaperId);
   return result;
 };
 
@@ -58,6 +59,25 @@ export const addMCQIntoQuestionPaper = async (id: string, mcq: TMCQ) => {
       $push: { MCQSet: mcq },
     }
   );
+  await questionPaperUtil.totalMarksCalculator(id);
+  return result;
+};
+
+export const removeMCQFromQuestionPaper = async (id: string, mcqId: string) => {
+  console.log(id, mcqId);
+  const result = await QuestionPaperModel.updateOne(
+    { id, isDeleted: false },
+    {
+      $pull: {
+        MCQSet: {
+          mcqId,
+        },
+      },
+    }
+  );
+
+  await questionPaperUtil.totalMarksCalculator(id);
+
   return result;
 };
 
@@ -89,5 +109,6 @@ const questionPaperService = {
   createQuestionPaper,
   getSingleQuestionPaper,
   addMCQIntoQuestionPaper,
+  removeMCQFromQuestionPaper,
 };
 export default questionPaperService;
