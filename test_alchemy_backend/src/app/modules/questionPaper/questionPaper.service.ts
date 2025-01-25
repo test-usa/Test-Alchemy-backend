@@ -1,6 +1,6 @@
 import { idFor } from "../../constents";
 import idGenerator from "../../util/idGenarator";
-import { TQuestionPaper } from "./questionPaper.interface";
+import { TMCQ, TQuestionPaper } from "./questionPaper.interface";
 import { QuestionPaperModel } from "./questionPaper.model";
 import questionPaperUtil from "./questionPaper.util";
 
@@ -27,10 +27,20 @@ export const getSingleQuestionPaper = async (qid: string) => {
 };
 
 // examinee
-export const createQuestionPaper = async (examineeId: string, payload: TQuestionPaper) => {
-  const modifiedQuestionPaperModel = idGenerator.asDocumentModel(QuestionPaperModel);
-  const questionPaperId = await idGenerator.collectionIdGenerator(modifiedQuestionPaperModel, idFor.questionPaper);
-  payload.MCQSet = questionPaperUtil.preSaveMcqDataModifier(payload.MCQSet, questionPaperId);
+export const createQuestionPaper = async (
+  examineeId: string,
+  payload: TQuestionPaper
+) => {
+  const modifiedQuestionPaperModel =
+    idGenerator.asDocumentModel(QuestionPaperModel);
+  const questionPaperId = await idGenerator.collectionIdGenerator(
+    modifiedQuestionPaperModel,
+    idFor.questionPaper
+  );
+  payload.MCQSet = questionPaperUtil.preSaveMcqDataModifier(
+    payload.MCQSet,
+    questionPaperId
+  );
   payload.id = questionPaperId;
   payload.examineeId = examineeId;
   const result = await QuestionPaperModel.create(payload);
@@ -38,14 +48,26 @@ export const createQuestionPaper = async (examineeId: string, payload: TQuestion
 };
 
 // examinee
-export const updateQuestionPaper = async (
-  qid: string,
-  payload: object
-) => {
-  console.log(qid);
+
+export const addMCQIntoQuestionPaper = async (id: string, mcq: TMCQ) => {
+  const mcqId = await idGenerator.mcqIdGenerator(id);
+  mcq.mcqId = mcqId;
   const result = await QuestionPaperModel.updateOne(
-    { qid, isDeleted: false },
-    payload
+    { id, isDeleted: false },
+    {
+      $push: { MCQSet: mcq },
+    }
+  );
+  return result;
+};
+
+export const updateQuestionPaper = async (id: string, payload: any) => {
+  const result = await QuestionPaperModel.updateOne(
+    { id, isDeleted: false },
+    {
+      duration: payload.duration,
+      MCQSet: payload.MCQSet,
+    }
   );
   return result;
 };
@@ -60,6 +82,12 @@ export const deleteQuestionPaper = async (qid: string) => {
 };
 
 const questionPaperService = {
-  getAllQuestionPaper, getQuestionPapersOfExaminee, deleteQuestionPaper, updateQuestionPaper, createQuestionPaper, getSingleQuestionPaper
-}
+  getAllQuestionPaper,
+  getQuestionPapersOfExaminee,
+  deleteQuestionPaper,
+  updateQuestionPaper,
+  createQuestionPaper,
+  getSingleQuestionPaper,
+  addMCQIntoQuestionPaper,
+};
 export default questionPaperService;

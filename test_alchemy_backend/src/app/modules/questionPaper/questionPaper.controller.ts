@@ -1,7 +1,6 @@
 import catchAsync from "../../util/catchAsync";
 import questionPaperService from "./questionPaper.service";
 
-
 const getAllQuestionPaper = catchAsync(async (req, res) => {
   const result = await questionPaperService.getAllQuestionPaper();
   res.status(200).json({
@@ -13,7 +12,9 @@ const getAllQuestionPaper = catchAsync(async (req, res) => {
 });
 
 const getSingleQuestionPaper = catchAsync(async (req, res) => {
-  const result = await questionPaperService.getSingleQuestionPaper(req.params.qid);
+  const result = await questionPaperService.getSingleQuestionPaper(
+    req.params.qid
+  );
   res.status(200).json({
     message: "Single question paper retrieved successfully",
     success: true,
@@ -23,7 +24,9 @@ const getSingleQuestionPaper = catchAsync(async (req, res) => {
 });
 
 const getQuestionPapersOfExaminee = catchAsync(async (req, res) => {
-  const result = await questionPaperService.getQuestionPapersOfExaminee(req.params.examineeId);
+  const result = await questionPaperService.getQuestionPapersOfExaminee(
+    req.params.examineeId
+  );
   res.status(200).json({
     message: "Single question paper retrieved successfully",
     success: true,
@@ -36,8 +39,10 @@ const createQuestionPaper = catchAsync(async (req, res) => {
   const user = req.user;
   console.log(user);
 
-
-  const result = await questionPaperService.createQuestionPaper(user.id,req.body);
+  const result = await questionPaperService.createQuestionPaper(
+    user.id,
+    req.body
+  );
   res.status(200).json({
     message: "Question paper created successfully",
     success: true,
@@ -46,8 +51,24 @@ const createQuestionPaper = catchAsync(async (req, res) => {
   });
 });
 
+const addMCQIntoQuestionPaper = catchAsync(async (req, res) => {
+  const result = await questionPaperService.addMCQIntoQuestionPaper(
+    req.params.qid,
+    req.body
+  );
+  res.status(200).json({
+    message: "Question paper updated successfully",
+    success: true,
+    status: 200,
+    body: result,
+  });
+});
+
 const updateQuestionPaper = catchAsync(async (req, res) => {
-  const result = await questionPaperService.updateQuestionPaper(req.params.qid, req.body);
+  const result = await questionPaperService.updateQuestionPaper(
+    req.params.qid,
+    req.body
+  );
   res.status(200).json({
     message: "Question paper updated successfully",
     success: true,
@@ -67,7 +88,12 @@ const deleteQuestionPaper = catchAsync(async (req, res) => {
 });
 
 const questionPaperController = {
-  getAllQuestionPaper, getSingleQuestionPaper, getQuestionPapersOfExaminee, createQuestionPaper, updateQuestionPaper, deleteQuestionPaper
+  getAllQuestionPaper,
+  getSingleQuestionPaper,
+  getQuestionPapersOfExaminee,
+  createQuestionPaper,
+  updateQuestionPaper,
+  deleteQuestionPaper,
+  addMCQIntoQuestionPaper,
 };
 export default questionPaperController;
-
