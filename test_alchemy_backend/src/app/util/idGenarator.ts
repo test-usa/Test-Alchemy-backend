@@ -77,8 +77,28 @@ const generateId = async (role:string):Promise<string> => {
 
 
 const mcqIdGenerator = async (QPId: string): Promise<string> => {
+
+  const splitString = (str:string): string[] => {
+    const match = str.match(/^(QUE\d+)(MCQ\d+)$/);
+    if (match) {
+      return [match[1], match[2].replace("MCQ", "")];
+    }
+    return []; // Return null if the string doesn't match the pattern
+  };
+
   const questionPaper = await QuestionPaperModel.findOne({ id: QPId });
-  const mcqSetLength = questionPaper?.MCQSet.length;
+  if (!questionPaper) {
+    throw new Error("Question Paper not found");
+  }
+  const lastMcqIndex = (questionPaper?.MCQSet.length - 1);
+  const lastMcqId = questionPaper?.MCQSet[lastMcqIndex].mcqId;
+
+
+  const mcqId = splitString(lastMcqId)
+
+  const numberedMcqId = parseInt(mcqId[1]);
+  const mcqSetLength = numberedMcqId + 1;
+
   return `${QPId}MCQ${mcqSetLength}`;
 };
 

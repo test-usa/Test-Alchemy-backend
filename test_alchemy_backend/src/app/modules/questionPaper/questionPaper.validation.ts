@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 
 // MCQ Schema
 const TMCQSchema = z.object({
-  QPid: z.string(),
+  QPid: z.string().optional(),
   mcqId: z.string().optional(),
   question: z.string(),
   options: z
@@ -17,7 +17,7 @@ const TMCQSchema = z.object({
 // Question Paper Schema
 export const TQuestionPaperSchema = z.object({
   body: z.object({
-    id: z.string(),
+    id: z.string().optional(),
     domain: z.string().nonempty({ message: "Domain must not be empty" }), // Added validation for non-empty domain
     examineeId: z.string().optional(),
     duration: z.number().min(1, "Duration must be a positive number"),

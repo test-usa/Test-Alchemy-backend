@@ -2,6 +2,7 @@ import { idFor } from "../../constents";
 import idGenerator from "../../util/idGenarator";
 import { TQuestionPaper } from "./questionPaper.interface";
 import { QuestionPaperModel } from "./questionPaper.model";
+import questionPaperUtil from "./questionPaper.util";
 
 // candidate
 export const getAllQuestionPaper = async () => {
@@ -26,16 +27,14 @@ export const getSingleQuestionPaper = async (qid: string) => {
 };
 
 // examinee
-export const createQuestionPaper = async (examineeId:string ,payload: TQuestionPaper) => {
+export const createQuestionPaper = async (examineeId: string, payload: TQuestionPaper) => {
   const modifiedQuestionPaperModel = idGenerator.asDocumentModel(QuestionPaperModel);
-  const questionPaperId = await idGenerator.collectionIdGenerator( modifiedQuestionPaperModel, idFor.questionPaper);
-
-  
-
+  const questionPaperId = await idGenerator.collectionIdGenerator(modifiedQuestionPaperModel, idFor.questionPaper);
+  payload.MCQSet = questionPaperUtil.preSaveMcqDataModifier(payload.MCQSet, questionPaperId);
   payload.id = questionPaperId;
   payload.examineeId = examineeId;
-    // const result = await QuestionPaperModel.create(payload);
-  // return result;
+  const result = await QuestionPaperModel.create(payload);
+  return result;
 };
 
 // examinee
@@ -61,6 +60,6 @@ export const deleteQuestionPaper = async (qid: string) => {
 };
 
 const questionPaperService = {
-  getAllQuestionPaper,getQuestionPapersOfExaminee,deleteQuestionPaper,updateQuestionPaper,createQuestionPaper,getSingleQuestionPaper
+  getAllQuestionPaper, getQuestionPapersOfExaminee, deleteQuestionPaper, updateQuestionPaper, createQuestionPaper, getSingleQuestionPaper
 }
 export default questionPaperService;
