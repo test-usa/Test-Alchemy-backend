@@ -98,7 +98,14 @@ export const endExam = async (id: string, payload: object) => {
       studentAnswer: null,
     });
   });
-
+  await examModel.updateOne(
+    {
+      id,
+    },
+    {
+      acquiredMark,
+    }
+  );
   return {
     acquiredMark,
     totalMarks: questionPaper.totalMarks,

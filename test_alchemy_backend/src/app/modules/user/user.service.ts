@@ -101,7 +101,10 @@ const updateUser = async (id: string, payload: TUserUpdateData) => {
     throw new Error("User dose not exist");
   }
 
-  const result = await UserModel.updateOne({ id, isDeleted: false }, payload);
+  const result = await UserModel.updateOne(
+    { id, isDeleted: false },
+    { firstName: payload.firstName, lastName: payload.lastName }
+  );
   return result;
 };
 

@@ -1,59 +1,64 @@
 import { model, Schema } from "mongoose";
 import { ExamType } from "./exam.interface";
 
-
 const answerSheetSchema = new Schema({
-    mcqId: { type: String, required: true },
-    answer: { type: Number, required: true }
+  mcqId: { type: String, required: true },
+  answer: { type: Number, required: true },
 });
 
 answerSheetSchema.pre("save", async function (next) {
-    const index = this.answer
-    if (index === 0 || index === 2 || index === 3 || index === 4) return next()
-    throw new Error("Invalid Answer")
-})
+  const index = this.answer;
+  if (index === 0 || index === 2 || index === 3 || index === 4) return next();
+  throw new Error("Invalid Answer");
+});
 
-const examSchema = new Schema<ExamType>({
+const examSchema = new Schema<ExamType>(
+  {
     isSubmitted: {
-        type: Boolean,
-        required: true,
-        default: false
+      type: Boolean,
+      required: true,
+      default: false,
     },
     answerSheet: {
-        type: [answerSheetSchema],
-        required: true
+      type: [answerSheetSchema],
+      required: true,
     },
     startTime: {
-        type: Date,
+      type: Date,
     },
     endTime: {
-        type: Date,
+      type: Date,
     },
     totalMarks: {
-        type: Number
+      type: Number,
     },
-    isDeleted:{
-        type:Boolean,
-        required: true,
-        default: false
+    isDeleted: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
     questionPaperId: {
-        type: String,
-        required: true,
-        unique: true
+      type: String,
+      required: true,
+      unique: true,
     },
-    candidId:{
-        type: String,
-        required: true,
+    candidId: {
+      type: String,
+      required: true,
     },
-    id:{
-        type: String,
-        required: true,
-        unique: true,
-    }
-}, {
-    timestamps: true
-})
+    id: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    acquiredMark: {
+      type: Number,
+      default: 0,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-
-export const examModel = model<ExamType>('Exam', examSchema)
+export const examModel = model<ExamType>("Exam", examSchema);

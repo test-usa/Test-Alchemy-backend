@@ -42,9 +42,14 @@ userRoutes.post(
 // update user
 userRoutes.patch(
   "/updateUser/:id",
+  auth(userRole.examinee, userRole.candidate),
   validator(userValidation.userUpdateValidationSchema),
   userController.updateUser
 );
-userRoutes.delete("/deleteUser/:id", userController.deleteUser);
+userRoutes.delete(
+  "/deleteUser/:id",
+  auth(userRole.admin),
+  userController.deleteUser
+);
 
 export default userRoutes;

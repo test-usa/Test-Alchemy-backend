@@ -6,9 +6,10 @@ import { UserModel } from "../user/user.model";
 import authUtill from "./auth.utill";
 
 const logIn = async (email: string, password: string) => {
-  const findUserWithEmail = await UserModel.findOne({ email: email }).select(
-    "+password"
-  );
+  const findUserWithEmail = await UserModel.findOne({
+    email: email,
+    isDeleted: false,
+  }).select("+password");
 
   if (!findUserWithEmail) {
     throw Error("no user found with this email");
