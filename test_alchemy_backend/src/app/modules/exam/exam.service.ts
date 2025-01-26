@@ -7,10 +7,25 @@ import { examModel } from "./exam.model";
 export const startExam = async (payload: object) => {
     const modifyModel = idGenerator.asDocumentModel(examModel)
     const generatedId = await idGenerator.collectionIdGenerator(modifyModel, idFor.exam)
-    return examModel.create({
+    const exam = await examModel.create({
         id: generatedId,
         ...payload
     })
+    const questionPaper = await QuestionPaperModel.findOne({
+        id: exam.questionPaperId
+    })
+    
+    return {
+        exam,
+        mcq: questionPaper?.MCQSet.map(e=>{
+            return {
+                id: e.mcqId,
+                question: e.question,
+                options: e.options,
+                mark: e.mark
+            }
+        })
+    }
 }
 
 export const endExam = async (id: string, payload: object) => {
