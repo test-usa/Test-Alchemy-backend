@@ -5,13 +5,20 @@ import { CandidateModel } from "../candidate/candidate.model";
 import { ExamineeModel } from "../examine/examinee.model";
 import { TUser, TUserUpdateData } from "./user.interface";
 import { UserModel } from "./user.model";
+import { uploadImgToCloudinary } from "../../util/uploadImgToCloudinary";
 
-const createUser = async (payload: TUser) => {
+const createUser = async (payload: TUser, file: any) => {
   // make id generator for candidate,examinee,admin
   const uId = await idGenerator.generateId(payload.userType);
+  // upload ing first
+  const uploadImg = await uploadImgToCloudinary(payload.id, file.path);
+  if (!uploadImg) {
+    throw new Error("Image not uploaded");
+  }
 
   payload.id = uId as string;
-  
+  payload.img = uploadImg.secure_url;
+
   console.log("payload", payload);
 
   const isUserExist = await UserModel.findOne({
@@ -34,10 +41,14 @@ const createUser = async (payload: TUser) => {
 
     if (payload.userType === "candidate") {
       // Ensure the correct fields are passed to the Candidate model
-      createExamineeOrCandidate = CandidateModel.create([{ uid: payload.id }], { session });
+      createExamineeOrCandidate = CandidateModel.create([{ uid: payload.id }], {
+        session,
+      });
     } else if (payload.userType === "examinee") {
       // Ensure the correct fields are passed to the Examinee model
-      createExamineeOrCandidate = ExamineeModel.create([{ uid: payload.id }], { session });
+      createExamineeOrCandidate = ExamineeModel.create([{ uid: payload.id }], {
+        session,
+      });
     }
 
     // Await the result for the candidate/examinee creation
@@ -68,8 +79,15 @@ const getSingleUser = async (id: string) => {
   return result;
 };
 
-const getAllUser = async () => {
-  const result = await UserModel.find({ isDeleted: false });
+const getAllUser = async (firstName: string, lastName: string) => {
+  const query: any = { isDeleted: false };
+  if (firstName) {
+    query.firstName = { $regex: firstName, $options: "i" };
+  }
+  if (lastName) {
+    query.lastName = { $regex: lastName, $options: "i" };
+  }
+  const result = await UserModel.find(query);
   return result;
 };
 

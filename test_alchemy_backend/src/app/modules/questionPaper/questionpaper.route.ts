@@ -17,12 +17,33 @@ router.get(
 
 router.get("/single/:qid", questionPaperController.getSingleQuestionPaper);
 
+router.post(
+  "/createQuestionPaper",
+  auth("examinee"),
+  validator(TQuestionPaperSchema),
+  questionPaperController.createQuestionPaper
+);
 
-router.post("/createQuestionPaper",auth("examinee"),validator(TQuestionPaperSchema),questionPaperController.createQuestionPaper);
-
-
-router.patch("/:qid", auth("examinee"), questionPaperController.updateQuestionPaper);
-router.delete("/:qid", auth("examinee"), questionPaperController.deleteQuestionPaper);
+router.patch(
+  "/updateQuestionPaper/:qid",
+  auth("examinee"),
+  questionPaperController.updateQuestionPaper
+);
+router.patch(
+  "/addNewMCQ/:qid",
+  auth("examinee"),
+  questionPaperController.addMCQIntoQuestionPaper
+);
+router.patch(
+  "/removeMCQ",
+  auth("examinee"),
+  questionPaperController.removeMCQFromQuestionPaper
+);
+router.delete(
+  "/:qid",
+  auth("examinee"),
+  questionPaperController.deleteQuestionPaper
+);
 
 const questionPaperRoutes = router;
 
