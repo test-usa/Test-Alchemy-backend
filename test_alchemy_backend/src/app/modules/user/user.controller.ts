@@ -2,8 +2,11 @@ import catchAsync from "../../util/catchAsync";
 import userServices from "./user.service";
 
 
+
 const createUser = catchAsync(async (req, res) => {
-  const result = await userServices.createUser(req.body);
+  const file = req.file;
+  const payload = req.body;
+  const result = await userServices.createUser(payload, file);
   res.status(200).json({
     message: "User created successfully",
     success: true,

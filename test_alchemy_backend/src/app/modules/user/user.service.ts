@@ -5,13 +5,21 @@ import { CandidateModel } from "../candidate/candidate.model";
 import { ExamineeModel } from "../examine/examinee.model";
 import { TUser, TUserUpdateData } from "./user.interface";
 import { UserModel } from "./user.model";
+import { uploadImgToCloudinary } from "../../util/uploadImgToCloudinary";
 
-const createUser = async (payload: TUser) => {
+
+const createUser = async (payload: TUser, file: any) => {
   // make id generator for candidate,examinee,admin
   const uId = await idGenerator.generateId(payload.userType);
+  // upload ing first
+  const uploadImg = await uploadImgToCloudinary(payload.id, file.path);
+  if (!uploadImg) {
+    throw new Error("Image not uploaded");
+  }
 
   payload.id = uId as string;
-  
+  payload.img = uploadImg.secure_url;
+
   console.log("payload", payload);
 
   const isUserExist = await UserModel.findOne({
@@ -45,6 +53,8 @@ const createUser = async (payload: TUser) => {
 
     // Commit the transaction after both User and related models are created
     await session.commitTransaction(); // Commit the transaction
+
+
 
     return { createUser, createExamineeOrCandidate };
   } catch (error: any) {
