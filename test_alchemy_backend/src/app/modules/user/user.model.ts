@@ -3,6 +3,7 @@ import { TUser } from "./user.interface";
 import bcrypt from "bcrypt";
 import { CandidateModel } from "../candidate/candidate.model";
 import { ExamineeModel } from "../examine/examinee.model";
+import config from "../../config";
 
 const userSchema = new Schema<TUser>(
   {
@@ -58,7 +59,10 @@ const userSchema = new Schema<TUser>(
 );
 
 userSchema.pre("save", async function (next) {
-  const hashedPass = await bcrypt.hash(this.password as string, 6);
+  const hashedPass = await bcrypt.hash(
+    this.password as string,
+    parseInt(config.bcrypt_salt_round)
+  );
   this.password = hashedPass;
   next();
 });
