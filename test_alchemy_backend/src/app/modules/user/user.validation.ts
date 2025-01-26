@@ -7,7 +7,7 @@ const userValidationSchema = z.object({
     email: z.string().email(),
     password: z.string(),
     domain: z.string(),
-    img: z.string(),
+    img: z.string().optional(),
     userType: z.enum(["candidate", "examinee", "admin"]),
     isDeleted: z.boolean().default(false),
     isLoggedIn: z.boolean().optional().default(false),
