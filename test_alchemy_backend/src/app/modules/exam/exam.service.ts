@@ -81,6 +81,11 @@ export const endExam = async (id: string, payload: object) => {
         })
 
     })
+    await examModel.updateOne({
+        id
+    },{
+        acquiredMark
+    })
     return {
         acquiredMark,
         totalMarks: questionPaper.totalMarks,
