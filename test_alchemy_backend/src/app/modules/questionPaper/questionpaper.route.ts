@@ -7,7 +7,11 @@ import questionPaperController from "./questionPaper.controller";
 
 const router = express.Router();
 
-router.get("/", questionPaperController.getAllQuestionPaper);
+router.get(
+  "/getAllQuestionPapers",
+  auth(userRole.candidate),
+  questionPaperController.getAllQuestionPaper
+);
 
 router.get(
   "/examinee/:examineeId",
@@ -30,7 +34,7 @@ router.patch(
   questionPaperController.updateQuestionPaper
 );
 router.patch(
-  "/addNewMCQ/:qid",
+  "/addNewMCQ",
   auth("examinee"),
   questionPaperController.addMCQIntoQuestionPaper
 );
@@ -40,7 +44,7 @@ router.patch(
   questionPaperController.removeMCQFromQuestionPaper
 );
 router.delete(
-  "/:qid",
+  "/deleteQuestionPaper",
   auth("examinee"),
   questionPaperController.deleteQuestionPaper
 );

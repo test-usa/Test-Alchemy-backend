@@ -51,6 +51,13 @@ export const createQuestionPaper = async (
 // examinee
 
 export const addMCQIntoQuestionPaper = async (id: string, mcq: TMCQ) => {
+  const isQuestionPaperExist = await QuestionPaperModel.findOne({
+    id,
+    isDeleted: false,
+  });
+  if (!isQuestionPaperExist) {
+    throw new Error("Question paper not found");
+  }
   const mcqId = await idGenerator.mcqIdGenerator(id);
   mcq.mcqId = mcqId;
   const result = await QuestionPaperModel.updateOne(
@@ -64,7 +71,6 @@ export const addMCQIntoQuestionPaper = async (id: string, mcq: TMCQ) => {
 };
 
 export const removeMCQFromQuestionPaper = async (id: string, mcqId: string) => {
-  console.log(id, mcqId);
   const result = await QuestionPaperModel.updateOne(
     { id, isDeleted: false },
     {
@@ -95,7 +101,7 @@ export const updateQuestionPaper = async (id: string, payload: any) => {
 // examinee
 export const deleteQuestionPaper = async (qid: string) => {
   const result = await QuestionPaperModel.updateOne(
-    { qid, isDeleted: false },
+    { id: qid, isDeleted: false },
     { isDeleted: true }
   );
   return result;

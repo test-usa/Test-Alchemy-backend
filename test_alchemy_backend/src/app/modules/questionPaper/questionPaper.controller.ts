@@ -52,8 +52,15 @@ const createQuestionPaper = catchAsync(async (req, res) => {
 });
 
 const addMCQIntoQuestionPaper = catchAsync(async (req, res) => {
+  const { id } = req.user;
+
+  if (id !== req.query.examineeId) {
+    throw new Error(
+      "You are not authorized to add new mcq to this question paper"
+    );
+  }
   const result = await questionPaperService.addMCQIntoQuestionPaper(
-    req.params.qid,
+    req.query.qid as string,
     req.body
   );
   res.status(200).json({
@@ -64,8 +71,15 @@ const addMCQIntoQuestionPaper = catchAsync(async (req, res) => {
   });
 });
 const removeMCQFromQuestionPaper = catchAsync(async (req, res) => {
+  const { id } = req.user;
+
+  if (id !== req.query.examineeId) {
+    throw new Error(
+      "You are not authorized to remove a mcq from this question paper"
+    );
+  }
   const result = await questionPaperService.removeMCQFromQuestionPaper(
-    req.query.id as string,
+    req.query.qid as string,
     req.query.mcqId as string
   );
   res.status(200).json({
@@ -90,7 +104,14 @@ const updateQuestionPaper = catchAsync(async (req, res) => {
 });
 
 const deleteQuestionPaper = catchAsync(async (req, res) => {
-  const result = await questionPaperService.deleteQuestionPaper(req.params.qid);
+  const { id } = req.user;
+
+  if (id !== req.query.examineeId) {
+    throw new Error("You are not authorized to delete this question paper");
+  }
+  const result = await questionPaperService.deleteQuestionPaper(
+    req.query.qid as string
+  );
   res.status(200).json({
     message: "Question paper deleted successfully",
     success: true,
