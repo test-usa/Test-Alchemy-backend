@@ -8,7 +8,7 @@
 
 ### POST - create user
 
-- http://localhost:5000/api/v1/user
+- http://localhost:5000/api/v1/user/
 - Example: {
   "firstName": "Examinee",
   "lastName": "Boy",
