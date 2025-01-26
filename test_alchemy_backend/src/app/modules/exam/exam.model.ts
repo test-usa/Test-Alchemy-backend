@@ -45,7 +45,6 @@ const examSchema = new Schema<ExamType>({
     candidId:{
         type: String,
         required: true,
-        unique: true
     },
     id:{
         type: String,
