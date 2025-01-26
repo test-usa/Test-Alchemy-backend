@@ -15,12 +15,20 @@ userRoutes.get("/getSingleUser/:id", userController.getSingleUser);
 // crerate user
 userRoutes.post(
   "/createExaminee",
-  auth(userRole.admin),
+  // auth(userRole.admin),
+  (req, res, next) => {
+    req.body.userType = "examinee";
+    next();
+  },
   validator(userValidation.userValidationSchema),
   userController.createUser
 );
 userRoutes.post(
   "/createCandidate",
+  (req, res, next) => {
+    req.body.userType = "candidate";
+    next();
+  },
   validator(userValidation.userValidationSchema),
   userController.createUser
 );

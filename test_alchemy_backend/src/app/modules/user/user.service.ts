@@ -11,7 +11,7 @@ const createUser = async (payload: TUser) => {
   const uId = await idGenerator.generateId(payload.userType);
 
   payload.id = uId as string;
-  
+
   console.log("payload", payload);
 
   const isUserExist = await UserModel.findOne({
@@ -34,10 +34,14 @@ const createUser = async (payload: TUser) => {
 
     if (payload.userType === "candidate") {
       // Ensure the correct fields are passed to the Candidate model
-      createExamineeOrCandidate = CandidateModel.create([{ uid: payload.id }], { session });
+      createExamineeOrCandidate = CandidateModel.create([{ uid: payload.id }], {
+        session,
+      });
     } else if (payload.userType === "examinee") {
       // Ensure the correct fields are passed to the Examinee model
-      createExamineeOrCandidate = ExamineeModel.create([{ uid: payload.id }], { session });
+      createExamineeOrCandidate = ExamineeModel.create([{ uid: payload.id }], {
+        session,
+      });
     }
 
     // Await the result for the candidate/examinee creation
@@ -68,8 +72,15 @@ const getSingleUser = async (id: string) => {
   return result;
 };
 
-const getAllUser = async () => {
-  const result = await UserModel.find({ isDeleted: false });
+const getAllUser = async (firstName: string, lastName: string) => {
+  const query: any = { isDeleted: false };
+  if (firstName) {
+    query.firstName = { $regex: firstName, $options: "i" };
+  }
+  if (lastName) {
+    query.lastName = { $regex: lastName, $options: "i" };
+  }
+  const result = await UserModel.find(query);
   return result;
 };
 

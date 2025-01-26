@@ -1,7 +1,6 @@
 import catchAsync from "../../util/catchAsync";
 import userServices from "./user.service";
 
-
 const createUser = catchAsync(async (req, res) => {
   const result = await userServices.createUser(req.body);
   res.status(200).json({
@@ -33,7 +32,10 @@ const getSingleUser = catchAsync(async (req, res) => {
 });
 
 const getAllUser = catchAsync(async (req, res) => {
-  const result = await userServices.getAllUser();
+  const result = await userServices.getAllUser(
+    req.query.firstName as string,
+    req.query.lastName as string
+  );
   res.status(200).json({
     message: "All users data retrieved successfully",
     success: true,
@@ -59,4 +61,4 @@ const userController = {
   getAllUser,
   deleteUser,
 };
-export default userController
+export default userController;
