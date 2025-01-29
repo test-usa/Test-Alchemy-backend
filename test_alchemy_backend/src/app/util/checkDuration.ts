@@ -3,7 +3,6 @@ export const isExamWithinDuration = (startTime: string, endTime: string, allowed
     const start = new Date(startTime).getTime(); // Convert startTime to a timestamp
     const end = new Date(endTime).getTime(); // Convert endTime to a timestamp
 
-    console.log(start, end, allowedDurationInMinutes);
 
 
     // Ensure end time is greater than start time
@@ -13,7 +12,7 @@ export const isExamWithinDuration = (startTime: string, endTime: string, allowed
 
     const duration = end - start; // Duration in milliseconds
     const allowedDurationInMs = allowedDurationInMinutes * 60 * 1000; // Convert minutes to milliseconds
-    console.log(duration, allowedDurationInMs);
+
 
     return duration <= allowedDurationInMs;
 };

@@ -21,7 +21,7 @@ const auth = (...requeredUserRole: TUserRole[]) => {
 
         const { id, role, iat } = decoded as JwtPayload;
 
-        console.log("role", role, "rquR", requeredUserRole)
+  
 
         // Check if the user's role is allowed
         if (requeredUserRole.length && !requeredUserRole.includes(role)) {
@@ -35,7 +35,7 @@ const auth = (...requeredUserRole: TUserRole[]) => {
             isDeleted:false
         });
 
-        console.log(findUser)
+
 
         if (!findUser) {
             throw new Error('Unauthorized User: Forbidden Access');

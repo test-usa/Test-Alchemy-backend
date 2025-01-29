@@ -23,7 +23,7 @@ export const uploadImgToCloudinary = async (name: string, path: string) => {
         api_secret: config.cloudinary_api_secret // Click 'View API Keys' above to copy your API secret
     });
 
-    console.log("path", path)
+  
 
     // Upload an image
     const uploadResult = await cloudinary.uploader
@@ -36,19 +36,18 @@ export const uploadImgToCloudinary = async (name: string, path: string) => {
             console.log(error);
         });
 
-    console.log("uploadResult", uploadResult)
+
     await deleteFile(path)
     return uploadResult
 }
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        console.log("root", process.cwd())
+
         cb(null, path.join(process.cwd(), "uploads"))
 
     },
     filename: function (req, file, cb) {
-        console.log("file", file)
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
         cb(null, file.fieldname + '-' + uniqueSuffix)
     }

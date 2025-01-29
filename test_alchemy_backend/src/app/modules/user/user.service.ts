@@ -19,7 +19,7 @@ const createUser = async (payload: TUser, file: any) => {
   payload.id = uId as string;
   payload.img = uploadImg.secure_url;
 
-  console.log("payload", payload);
+
 
   const isUserExist = await UserModel.findOne({
     email: payload.email,
@@ -60,7 +60,6 @@ const createUser = async (payload: TUser, file: any) => {
     return { createUser, createExamineeOrCandidate };
   } catch (error: any) {
     await session.abortTransaction(); // Rollback the transaction
-    console.log("error", error);
     throw new Error(error);
   } finally {
     session.endSession();

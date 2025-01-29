@@ -33,7 +33,7 @@ export const searchService = async (user: any, query: any) => {
     };
     if (searchTerm) {
       const splitedSearchTerm = searchTerm.split(" ");
-      console.log(splitedSearchTerm);
+
       if (splitedSearchTerm.length > 1) {
         searchQuery.firstName = { $regex: splitedSearchTerm[0], $options: "i" };
         searchQuery.lastName = { $regex: splitedSearchTerm[1], $options: "i" };

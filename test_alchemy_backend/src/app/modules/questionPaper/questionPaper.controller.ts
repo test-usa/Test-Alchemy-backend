@@ -37,7 +37,7 @@ const getQuestionPapersOfExaminee = catchAsync(async (req, res) => {
 
 const createQuestionPaper = catchAsync(async (req, res) => {
   const user = req.user;
-  console.log(user);
+ 
 
   const result = await questionPaperService.createQuestionPaper(
     user.id,

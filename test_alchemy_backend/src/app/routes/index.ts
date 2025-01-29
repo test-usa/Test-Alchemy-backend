@@ -8,7 +8,6 @@ import examRoute from "../modules/exam/exam.route";
 import searchRoute from "../modules/search/search.route";
 
 const Routes = express.Router();
-console.log("working");
 // Array of module routes
 const moduleRouts = [
   {

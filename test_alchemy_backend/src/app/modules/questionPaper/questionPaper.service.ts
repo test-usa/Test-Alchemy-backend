@@ -12,7 +12,7 @@ export const getAllQuestionPaper = async () => {
 
 // examinee
 export const getQuestionPapersOfExaminee = async (examineeId: string) => {
-  console.log(examineeId);
+ 
   const result = await QuestionPaperModel.find({
     examineeId,
     isDeleted: false,

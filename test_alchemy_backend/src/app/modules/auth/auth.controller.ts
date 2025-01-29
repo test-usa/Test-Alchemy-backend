@@ -1,15 +1,19 @@
 import catchAsync from "../../util/catchAsync";
+import golbalRespnseHandler from "../../util/globalResponseHandeler";
 import authSercvices from "./auth.services";
 
 const logIn = catchAsync(async (req, res) => {
     const { email, password } = req.body
     const result = await authSercvices.logIn(email, password)
-    const { approvalToken, refreshToken, findUserAndUpdate } = result
-    res.status(200).json({
-        message: "Log In Successful",
-        approvalToken: approvalToken,
-        refreshToken: refreshToken,
-        user: findUserAndUpdate
+    const { approvalToken, refreshToken } = result
+    golbalRespnseHandler(res, {
+        statusCode: 200,
+    success: true,
+    message: "Login Successful",
+    data: {
+        approvalToken,
+        refreshToken,
+    }
     })
 })
 

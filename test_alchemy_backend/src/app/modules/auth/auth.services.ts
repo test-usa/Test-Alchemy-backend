@@ -46,7 +46,6 @@ const logIn = async (email: string, password: string) => {
     config.rifresh_expairsIn
   );
 
-  // console.log(approvalToken, refreshToken, findUserWithEmail)
 
   return { approvalToken, refreshToken, findUserAndUpdate };
 };
