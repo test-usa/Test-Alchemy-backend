@@ -1,5 +1,4 @@
 import { ClientSession, startSession } from "mongoose";
-import { idFor } from "../../constents";
 import idGenerator from "../../util/idGenarator";
 import { CandidateModel } from "../candidate/candidate.model";
 import { ExamineeModel } from "../examine/examinee.model";
