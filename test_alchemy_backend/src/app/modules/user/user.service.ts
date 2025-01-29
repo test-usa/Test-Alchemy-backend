@@ -10,6 +10,15 @@ import { uploadImgToCloudinary } from "../../util/uploadImgToCloudinary";
 const createUser = async (payload: TUser, file: any) => {
   // make id generator for candidate,examinee,admin
   const uId = await idGenerator.generateId(payload.userType);
+  
+  const isUserExist = await UserModel.findOne({
+    email: payload.email,
+    isDeleted: false,
+  });
+  if (isUserExist) {
+    throw new Error("User already exist");
+  }
+
   // upload ing first
   const uploadImg = await uploadImgToCloudinary(payload.id, file.path);
   if (!uploadImg) {
@@ -18,16 +27,6 @@ const createUser = async (payload: TUser, file: any) => {
 
   payload.id = uId as string;
   payload.img = uploadImg.secure_url;
-
-
-
-  const isUserExist = await UserModel.findOne({
-    email: payload.email,
-    isDeleted: false,
-  });
-  if (isUserExist) {
-    throw new Error("User already exist");
-  }
 
   const session: ClientSession = await startSession(); // Start the session
   session.startTransaction(); // Begin transaction
