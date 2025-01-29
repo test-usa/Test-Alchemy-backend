@@ -43,7 +43,15 @@ export const searchService = async (user: any, query: any) => {
     }
     const result = await UserModel.find(searchQuery)
       .limit(limit)
-      .skip(limit * page);
+      .skip(limit * page)
+      .select({
+        id: 1,
+        firstName: 1,
+        lastName: 1,
+        email: 1,
+        img: 1,
+        _id: 0,
+      });
     return result;
   }
 };
