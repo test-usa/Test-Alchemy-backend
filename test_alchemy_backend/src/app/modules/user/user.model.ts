@@ -27,10 +27,6 @@ const userSchema = new Schema<TUser>(
       select: false,
       required: true,
     },
-    domain: {
-      type: String,
-      required: true,
-    },
     img: {
       type: String,
       required: false,
