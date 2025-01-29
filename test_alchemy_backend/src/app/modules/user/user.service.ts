@@ -10,7 +10,7 @@ import { uploadImgToCloudinary } from "../../util/uploadImgToCloudinary";
 const createUser = async (payload: TUser, file: any) => {
   // make id generator for candidate,examinee,admin
   const uId = await idGenerator.generateId(payload.userType);
-  
+
   const isUserExist = await UserModel.findOne({
     email: payload.email,
     isDeleted: false,
@@ -56,7 +56,16 @@ const createUser = async (payload: TUser, file: any) => {
     // Commit the transaction after both User and related models are created
     await session.commitTransaction(); // Commit the transaction
 
-    return { createUser, createExamineeOrCandidate };
+    const user = createUser[0];
+    const result = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      img: user.img,
+      userType: user.userType,
+    };
+    return result;
   } catch (error: any) {
     await session.abortTransaction(); // Rollback the transaction
     throw new Error(error);

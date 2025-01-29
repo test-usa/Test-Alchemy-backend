@@ -11,7 +11,7 @@ const userRoutes = express.Router();
 
 // get users
 userRoutes.get("/getAllUser", userController.getAllUser);
-userRoutes.get("/getSingleUser/:id", userController.getSingleUser);
+userRoutes.get("/userProfile/:id", userController.getSingleUser);
 
 // crerate user
 userRoutes.post(

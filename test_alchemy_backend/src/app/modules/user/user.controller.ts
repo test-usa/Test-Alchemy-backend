@@ -10,7 +10,7 @@ const createUser = catchAsync(async (req, res) => {
     message: `${req.body.userType} created successfully`,
     success: true,
     statusCode: 200,
-    data: null,
+    data: req.body.userType === "examinee" ? result : null,
   });
 });
 

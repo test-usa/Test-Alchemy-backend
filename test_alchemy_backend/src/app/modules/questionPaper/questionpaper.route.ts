@@ -12,9 +12,14 @@ router.get(
   auth(userRole.candidate),
   questionPaperController.getAllQuestionPaper
 );
+router.get(
+  "/getSingleQuestionPaper/:qid",
+  auth(userRole.candidate, userRole.examinee),
+  questionPaperController.getSingleQuestionPaper
+);
 
 router.get(
-  "/examinee/:examineeId",
+  "/allQuestionPapersOfExaminee",
   auth(userRole.examinee),
   questionPaperController.getQuestionPapersOfExaminee
 );
