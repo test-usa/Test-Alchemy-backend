@@ -3,7 +3,7 @@ import validator from "../../util/validator";
 import userController from "./user.controller";
 import userValidation from "./user.validation";
 import auth from "../../middlewares/auth";
-import { userRole } from "../../constents";
+import { idFor, userRole } from "../../constents";
 import { upload } from "../../util/uploadImgToCloudinary";
 // import auth from "../../middlewares/auth";
 // import { userRole } from "../../constents";
@@ -19,7 +19,7 @@ userRoutes.post(
   upload.single("file"),
   (req, res, next) => {
     req.body = JSON.parse(req.body.data);
-    req.body.userType = "examinee";
+    req.body.userType = idFor.examinee;
     next();
   },
   auth(userRole.admin),
@@ -32,7 +32,7 @@ userRoutes.post(
   upload.single("file"),
   (req, res, next) => {
     req.body = JSON.parse(req.body.data);
-    req.body.userType = "candidate";
+    req.body.userType = idFor.candidate;
     next();
   },
   validator(userValidation.userValidationSchema),

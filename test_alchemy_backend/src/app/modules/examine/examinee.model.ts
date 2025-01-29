@@ -3,7 +3,7 @@ import { TExaminee } from "./examinee.interface";
 import { string } from "zod";
 
 const examineeSchema = new Schema<TExaminee>({
-  uid: {
+  id: {
     type: String,
   },
   questionPapers: {
@@ -11,6 +11,8 @@ const examineeSchema = new Schema<TExaminee>({
     ref: "QuestionPaper",
     required: true,
   },
+},{
+  timestamps:true
 });
 
 export const ExamineeModel = model("Examinee", examineeSchema);
