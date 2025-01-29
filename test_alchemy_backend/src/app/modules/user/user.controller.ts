@@ -1,14 +1,10 @@
-import { Request, Response } from "express";
 import catchAsync from "../../util/catchAsync";
-import {
-  createUserIntoDB,
-  deleteUserFromDB,
-  getSingleUserFromDB,
-  UpdateUserIntoDB,
-} from "./user.service";
+import userServices from "./user.service";
 
-export const createUser = catchAsync(async (req, res, next) => {
-  const result = await createUserIntoDB(req.body);
+const createUser = catchAsync(async (req, res) => {
+  const file = req.file;
+  const payload = req.body;
+  const result = await userServices.createUser(payload, file);
   res.status(200).json({
     message: "User created successfully",
     success: true,
@@ -17,8 +13,8 @@ export const createUser = catchAsync(async (req, res, next) => {
   });
 });
 
-export const updateUser = catchAsync(async (req, res) => {
-  const result = await UpdateUserIntoDB(req.params.id, req.body);
+const updateUser = catchAsync(async (req, res) => {
+  const result = await userServices.updateUser(req.params.id, req.body);
   res.status(200).json({
     message: "User updated successfully",
     success: true,
@@ -27,8 +23,8 @@ export const updateUser = catchAsync(async (req, res) => {
   });
 });
 
-export const getSingleUser = catchAsync(async (req, res) => {
-  const result = await getSingleUserFromDB(req.params.id);
+const getSingleUser = catchAsync(async (req, res) => {
+  const result = await userServices.getSingleUser(req.params.id);
   res.status(200).json({
     message: "User data retrieved successfully",
     success: true,
@@ -37,9 +33,11 @@ export const getSingleUser = catchAsync(async (req, res) => {
   });
 });
 
-export const getAllUser = catchAsync(async (req, res) => {
-  console.log("hit");
-  const result = await getSingleUserFromDB(req.params.id);
+const getAllUser = catchAsync(async (req, res) => {
+  const result = await userServices.getAllUser(
+    req.query.firstName as string,
+    req.query.lastName as string
+  );
   res.status(200).json({
     message: "All users data retrieved successfully",
     success: true,
@@ -48,8 +46,8 @@ export const getAllUser = catchAsync(async (req, res) => {
   });
 });
 
-export const deleteUser = catchAsync(async (req, res) => {
-  const result = await deleteUserFromDB(req.params.id);
+const deleteUser = catchAsync(async (req, res) => {
+  const result = await userServices.deleteUser(req.params.id);
   res.status(200).json({
     message: "User deleted successfully",
     success: true,
@@ -57,3 +55,12 @@ export const deleteUser = catchAsync(async (req, res) => {
     body: result,
   });
 });
+
+const userController = {
+  createUser,
+  updateUser,
+  getSingleUser,
+  getAllUser,
+  deleteUser,
+};
+export default userController;

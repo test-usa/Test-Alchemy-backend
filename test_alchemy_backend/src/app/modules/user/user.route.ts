@@ -1,20 +1,55 @@
 import express from "express";
-import {
-  createUser,
-  deleteUser,
-  getAllUser,
-  getSingleUser,
-  updateUser,
-} from "./user.controller";
+import validator from "../../util/validator";
+import userController from "./user.controller";
+import userValidation from "./user.validation";
+import auth from "../../middlewares/auth";
+import { userRole } from "../../constents";
+import { upload } from "../../util/uploadImgToCloudinary";
+// import auth from "../../middlewares/auth";
+// import { userRole } from "../../constents";
+const userRoutes = express.Router();
 
-const router = express.Router();
+// get users
+userRoutes.get("/getAllUser", userController.getAllUser);
+userRoutes.get("/getSingleUser/:id", userController.getSingleUser);
 
-router.get("/", getAllUser);
-router.get("/:id", getSingleUser);
-router.post("/", createUser);
-router.patch("/", updateUser);
-router.delete("/:id", deleteUser);
+// crerate user
+userRoutes.post(
+  "/createExaminee",
+  upload.single("file"),
+  (req, res, next) => {
+    req.body = JSON.parse(req.body.data);
+    req.body.userType = "examinee";
+    next();
+  },
+  auth(userRole.admin),
+  validator(userValidation.userValidationSchema),
+  userController.createUser
+);
 
-const userRoutes = router;
+userRoutes.post(
+  "/createCandidate",
+  upload.single("file"),
+  (req, res, next) => {
+    req.body = JSON.parse(req.body.data);
+    req.body.userType = "candidate";
+    next();
+  },
+  validator(userValidation.userValidationSchema),
+  userController.createUser
+);
+
+// update user
+userRoutes.patch(
+  "/updateUser/:id",
+  auth(userRole.examinee, userRole.candidate),
+  validator(userValidation.userUpdateValidationSchema),
+  userController.updateUser
+);
+userRoutes.delete(
+  "/deleteUser/:id",
+  auth(userRole.admin),
+  userController.deleteUser
+);
 
 export default userRoutes;

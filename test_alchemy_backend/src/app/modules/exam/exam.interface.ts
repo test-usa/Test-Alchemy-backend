@@ -1,9 +1,16 @@
+import { Types } from "mongoose";
 export interface ExamType {
-    name: string,
-    isSubmitted: string,
-    totalMraks: string,
-    starteTime: string,
-    endTime: string,
-    duration: string
-    questions: {}[]
+  id: string;
+  questionPaperId: String;
+  candidId: String;
+  isSubmitted: boolean;
+  totalMarks: number;
+  acquiredMark: number;
+  startTime: Date;
+  endTime: Date;
+  isDeleted: boolean;
+  answerSheet: {
+    mcqId: string;
+    answer: number;
+  }[];
 }

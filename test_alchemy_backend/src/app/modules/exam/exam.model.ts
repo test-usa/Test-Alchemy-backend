@@ -1,26 +1,64 @@
 import { model, Schema } from "mongoose";
 import { ExamType } from "./exam.interface";
 
-export const examSchema = new Schema<ExamType
->({
-    name:{
-        type: String,
-        required: true
-    },
-    duration:{
-        type: String,
-        required: true
-    },
-    isSubmitted:{
-        type: String,
-        required: true,
-    },
-    questions:[
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Queations"
-        }
-    ],
-    
-})
+const answerSheetSchema = new Schema({
+  mcqId: { type: String, required: true },
+  answer: { type: Number, required: true },
+});
 
+answerSheetSchema.pre("save", async function (next) {
+  const index = this.answer;
+  if (index === 0 || index === 2 || index === 3 || index === 4) return next();
+  throw new Error("Invalid Answer");
+});
+
+const examSchema = new Schema<ExamType>(
+  {
+    isSubmitted: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    answerSheet: {
+      type: [answerSheetSchema],
+      required: true,
+    },
+    startTime: {
+      type: Date,
+    },
+    endTime: {
+      type: Date,
+    },
+    totalMarks: {
+      type: Number,
+    },
+    isDeleted: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    questionPaperId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    candidId: {
+      type: String,
+      required: true,
+    },
+    id: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    acquiredMark: {
+      type: Number,
+      default: 0,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export const examModel = model<ExamType>("Exam", examSchema);

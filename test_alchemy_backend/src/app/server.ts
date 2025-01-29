@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import config from "./config";
 import app from "./app";
 import { Server } from "http";
+import DBSeeder from "./seeder";
 
 let server: Server;
 
@@ -9,6 +10,7 @@ async function main() {
   try {
     console.log("connectinh to mongo Db....");
     await mongoose.connect(config.mongoose_uri);
+    await DBSeeder.adminSeeder();
     server = app.listen(config.port, () => {
       console.log(`Example app listening on port ${config.port}`);
     });
