@@ -36,6 +36,16 @@ const getQuestionPapersOfExaminee = catchAsync(async (req, res) => {
   });
 });
 
+const getAllQuestionPapersForCandidate = catchAsync(async (req, res) => {
+  const result = await questionPaperService.getAllQuestionPapersForCandidate();
+  golbalRespnseHandler(res, {
+    message: "single question paper retrieved successfully",
+    success: true,
+    statusCode: 200,
+    data: result,
+  });
+});
+
 const createQuestionPaper = catchAsync(async (req, res) => {
   const user = req.user;
 
@@ -68,13 +78,8 @@ const addMCQIntoQuestionPaper = catchAsync(async (req, res) => {
 });
 const removeMCQFromQuestionPaper = catchAsync(async (req, res) => {
   const { id } = req.user;
-
-  if (id !== req.query.examineeId) {
-    throw new Error(
-      "You are not authorized to remove a mcq from this question paper"
-    );
-  }
   const result = await questionPaperService.removeMCQFromQuestionPaper(
+    id,
     req.query.qid as string,
     req.query.mcqId as string
   );
@@ -120,6 +125,7 @@ const deleteQuestionPaper = catchAsync(async (req, res) => {
 const questionPaperController = {
   getAllQuestionPaper,
   getSingleQuestionPaper,
+  getAllQuestionPapersForCandidate,
   getQuestionPapersOfExaminee,
   createQuestionPaper,
   updateQuestionPaper,

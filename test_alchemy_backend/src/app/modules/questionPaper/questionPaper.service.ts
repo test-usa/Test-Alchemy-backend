@@ -16,6 +16,18 @@ export const getAllQuestionPaper = async () => {
   return result;
 };
 
+export const getAllQuestionPapersForCandidate = async () => {
+  const result = await QuestionPaperModel.find({ isDeleted: false }).select({
+    _id: 0,
+    isDeleted: 0,
+    __v: 0,
+    createdAt: 0,
+    updatedAt: 0,
+    MCQSet: 0,
+  });
+  return result;
+};
+
 // examinee
 export const getQuestionPapersOfExaminee = async (examineeId: string) => {
   console.log(examineeId);
@@ -119,9 +131,24 @@ export const addMCQIntoQuestionPaper = async (
   return result;
 };
 
-export const removeMCQFromQuestionPaper = async (id: string, mcqId: string) => {
+export const removeMCQFromQuestionPaper = async (
+  examineeId: string,
+  qpid: string,
+  mcqId: string
+) => {
+  const isQuestionPaperExist = await QuestionPaperModel.findOne({
+    id: qpid,
+    examineeId,
+    isDeleted: false,
+  });
+  if (!isQuestionPaperExist) {
+    throw new Error("Question paper not found");
+  }
+  if (isQuestionPaperExist.examineeId !== examineeId) {
+    throw new Error("unauthorized access");
+  }
   const result = await QuestionPaperModel.updateOne(
-    { id, isDeleted: false },
+    { examineeId, id: qpid, isDeleted: false },
     {
       $pull: {
         MCQSet: {
@@ -131,7 +158,7 @@ export const removeMCQFromQuestionPaper = async (id: string, mcqId: string) => {
     }
   );
 
-  await questionPaperUtil.totalMarksCalculator(id);
+  await questionPaperUtil.totalMarksCalculator(qpid);
 
   return result;
 };
@@ -158,6 +185,7 @@ export const deleteQuestionPaper = async (qid: string) => {
 
 const questionPaperService = {
   getAllQuestionPaper,
+  getAllQuestionPapersForCandidate,
   getQuestionPapersOfExaminee,
   deleteQuestionPaper,
   updateQuestionPaper,

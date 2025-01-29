@@ -10,6 +10,9 @@ import { uploadImgToCloudinary } from "../../util/uploadImgToCloudinary";
 const createUser = async (payload: TUser, file: any) => {
   // make id generator for candidate,examinee,admin
   const uId = await idGenerator.generateId(payload.userType);
+  if (!uId) {
+    throw new Error("Id not generated");
+  }
 
   const isUserExist = await UserModel.findOne({
     email: payload.email,
@@ -40,12 +43,12 @@ const createUser = async (payload: TUser, file: any) => {
 
     if (payload.userType === "candidate") {
       // Ensure the correct fields are passed to the Candidate model
-      createExamineeOrCandidate = CandidateModel.create([{ uid: payload.id }], {
+      createExamineeOrCandidate = CandidateModel.create([{ id: payload.id }], {
         session,
       });
     } else if (payload.userType === "examinee") {
       // Ensure the correct fields are passed to the Examinee model
-      createExamineeOrCandidate = ExamineeModel.create([{ uid: payload.id }], {
+      createExamineeOrCandidate = ExamineeModel.create([{ id: payload.id }], {
         session,
       });
     }

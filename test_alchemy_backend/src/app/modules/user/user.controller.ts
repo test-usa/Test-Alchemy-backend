@@ -15,7 +15,8 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const updateUser = catchAsync(async (req, res) => {
-  const result = await userServices.updateUser(req.params.id, req.body);
+  const uid = req.user.id;
+  const result = await userServices.updateUser(uid, req.body);
   res.status(200).json({
     message: "User updated successfully",
     success: true,

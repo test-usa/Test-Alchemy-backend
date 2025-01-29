@@ -23,6 +23,11 @@ router.get(
   auth(userRole.examinee),
   questionPaperController.getQuestionPapersOfExaminee
 );
+router.get(
+  "/getAllQuestionPapersForCandidate",
+  auth(userRole.candidate),
+  questionPaperController.getAllQuestionPapersForCandidate
+);
 
 router.get("/single/:qid", questionPaperController.getSingleQuestionPaper);
 
@@ -43,7 +48,7 @@ router.patch(
   auth("examinee"),
   questionPaperController.addMCQIntoQuestionPaper
 );
-router.patch(
+router.delete(
   "/removeMCQ",
   auth("examinee"),
   questionPaperController.removeMCQFromQuestionPaper
