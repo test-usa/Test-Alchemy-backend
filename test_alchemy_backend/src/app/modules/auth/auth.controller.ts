@@ -27,8 +27,11 @@ const logOut = catchAsync(async (req, res) => {
     }
     
     const result = await authSercvices.logOut(authorizationToken)
-    res.status(200).json({
-        message: "Log OUT Successful",
+    golbalRespnseHandler(res, {
+    statusCode: 200,
+    success: true,
+    message: "Logout Successful",
+    data: null
     })
 })
 
