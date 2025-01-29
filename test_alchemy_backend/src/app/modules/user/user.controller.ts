@@ -7,10 +7,10 @@ const createUser = catchAsync(async (req, res) => {
   const payload = req.body;
   const result = await userServices.createUser(payload, file);
   golbalRespnseHandler(res, {
-    message: "User created successfully",
+    message: `${req.body.userType} created successfully`,
     success: true,
     statusCode: 200,
-    data: result,
+    data: null,
   });
 });
 
