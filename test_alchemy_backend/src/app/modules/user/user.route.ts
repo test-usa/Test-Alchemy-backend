@@ -4,7 +4,7 @@ import userController from "./user.controller";
 import userValidation from "./user.validation";
 import auth from "../../middlewares/auth";
 import { idFor, userRole } from "../../constents";
-import { upload } from "../../util/uploadImgToCloudinary";
+// import { upload } from "../../util/uploadImgToCloudinary";
 // import auth from "../../middlewares/auth";
 // import { userRole } from "../../constents";
 const userRoutes = express.Router();
@@ -16,9 +16,9 @@ userRoutes.get("/userProfile/:id", userController.getSingleUser);
 // crerate user
 userRoutes.post(
   "/createExaminee",
-  upload.single("file"),
+  // upload.single("file"),
   (req, res, next) => {
-    req.body = JSON.parse(req.body.data);
+    // req.body = JSON.parse(req.body.data);
     req.body.userType = idFor.examinee;
     next();
   },
@@ -29,9 +29,9 @@ userRoutes.post(
 
 userRoutes.post(
   "/createCandidate",
-  upload.single("file"),
+  // upload.single("file"),
   (req, res, next) => {
-    req.body = JSON.parse(req.body.data);
+    // req.body = JSON.parse(req.body.data);
     req.body.userType = idFor.candidate;
     next();
   },

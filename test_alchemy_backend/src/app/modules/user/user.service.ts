@@ -4,9 +4,9 @@ import { CandidateModel } from "../candidate/candidate.model";
 import { ExamineeModel } from "../examine/examinee.model";
 import { TUser, TUserUpdateData } from "./user.interface";
 import { UserModel } from "./user.model";
-import { uploadImgToCloudinary } from "../../util/uploadImgToCloudinary";
+// import { uploadImgToCloudinary } from "../../util/uploadImgToCloudinary";
 
-const createUser = async (payload: TUser, file: any) => {
+const createUser = async (payload: TUser) => {
   // make id generator for candidate,examinee,admin
   const uId = await idGenerator.generateId(payload.userType);
   if (!uId) {
@@ -22,13 +22,13 @@ const createUser = async (payload: TUser, file: any) => {
   }
 
   // upload ing first
-  const uploadImg = await uploadImgToCloudinary(payload.id, file.path);
-  if (!uploadImg) {
-    throw new Error("Image not uploaded");
-  }
+  // const uploadImg = await uploadImgToCloudinary(payload.id, file.path);
+  // if (!uploadImg) {
+  //   throw new Error("Image not uploaded");
+  // }
 
   payload.id = uId as string;
-  payload.img = uploadImg.secure_url;
+  // payload.img = uploadImg.secure_url;
 
   const session: ClientSession = await startSession(); // Start the session
   session.startTransaction(); // Begin transaction

@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 import { TExaminee } from "./examinee.interface";
-import { string } from "zod";
+
 
 const examineeSchema = new Schema<TExaminee>({
   id: {
