@@ -80,6 +80,13 @@ const getSingleUser = async (id: string) => {
   const isUserExist = await UserModel.findOne({
     id,
     isDeleted: false,
+  }).select({
+    isDeleted: 0,
+    isLoggedIn: 0,
+    createdAt: 0,
+    updatedAt: 0,
+    __v: 0,
+    loggedOutTime: 0,
   });
   if (!isUserExist) {
     throw new Error("User dose not exist");
@@ -96,7 +103,14 @@ const getAllUser = async (firstName: string, lastName: string) => {
   if (lastName) {
     query.lastName = { $regex: lastName, $options: "i" };
   }
-  const result = await UserModel.find(query);
+  const result = await UserModel.find(query).select({
+    isDeleted: 0,
+    isLoggedIn: 0,
+    createdAt: 0,
+    updatedAt: 0,
+    __v: 0,
+    loggedOutTime: 0,
+  });
   return result;
 };
 

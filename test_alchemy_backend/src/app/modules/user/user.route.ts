@@ -10,8 +10,12 @@ import { idFor, userRole } from "../../constents";
 const userRoutes = express.Router();
 
 // get users
-userRoutes.get("/getAllUser", userController.getAllUser);
-userRoutes.get("/userProfile/:id", userController.getSingleUser);
+userRoutes.get("/getAllUser", auth(userRole.admin), userController.getAllUser);
+userRoutes.get(
+  "/userProfile/:id",
+  auth(userRole.admin),
+  userController.getSingleUser
+);
 
 // crerate user
 userRoutes.post(
