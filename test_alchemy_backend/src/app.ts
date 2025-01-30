@@ -1,10 +1,11 @@
 import express from "express";
 const app = express();
 import cors from "cors";
+import Routes from "./app/routes";
+import routeNotFound from "./app/middlewares/routNotFound";
+import globalErrorHandler from "./app/middlewares/globalerrorHandeller";
 
-import globalErrorHandler from "./middlewares/globalerrorHandeller";
-import routeNotFound from "./middlewares/routNotFound";
-import Routes from "./routes";
+
 
 // middleWares
 app.use(express.json());

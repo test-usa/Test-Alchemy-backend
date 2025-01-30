@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import config from "./config";
 import app from "./app";
 import { Server } from "http";
-import DBSeeder from "./seeder";
+import DBSeeder from "./app/seeder";
+import config from "./app/config";
 
 let server: Server;
 
