@@ -40,7 +40,6 @@ const examSchema = new Schema<ExamType>(
     questionPaperId: {
       type: String,
       required: true,
-      unique: true,
     },
     candidId: {
       type: String,
