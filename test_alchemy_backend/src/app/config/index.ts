@@ -16,6 +16,7 @@ const config = {
   admin_firstName: process.env.ADMIN_FIRST_NAME as string,
   admin_lastName: process.env.ADMIN_LAST_NAME as string,
   admin_email: process.env.ADMIN_EMAIL as string,
+  admin_id:process.env.ADMIN_ID as string,
   admin_password: process.env.ADMIN_PASSWORD as string,
   bcrypt_salt_round: process.env.SALT_ROUNDS as string,
 };

@@ -16,6 +16,14 @@ export const startExam = async (payload: object) => {
   });
   const questionPaper = await QuestionPaperModel.findOne({
     id: exam.questionPaperId,
+  }).select({
+    __v:0,
+    createdAt:0,
+    updatedAt:0,
+    answerSheet:0,
+    _id:0,
+    acquiredMark:0,
+    isDeleted:0,
   });
 
   return {
@@ -61,7 +69,7 @@ export const endExam = async (id: string, payload: object) => {
   const { answerSheet } = exam;
 
   let acquiredMark = 0;
-  let reportSheet: {
+  const reportSheet: {
     questionId: string;
     correctAnswer: number;
     studentAnswer: number | null;

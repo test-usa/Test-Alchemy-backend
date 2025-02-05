@@ -14,6 +14,7 @@ const adminSeeder = async () => {
       email: config.admin_email,
       userType: userRole.admin,
       password: config.admin_password,
+      id:config.admin_id,
       domain: "n/a",
     };
 

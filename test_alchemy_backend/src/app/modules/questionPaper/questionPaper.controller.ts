@@ -83,7 +83,7 @@ const addMCQIntoQuestionPaper = catchAsync(async (req, res) => {
     message: "question paper updated successfully",
     success: true,
     statusCode: 200,
-    data: result,
+    data: null,
   });
 });
 const removeMCQFromQuestionPaper = catchAsync(async (req, res) => {
@@ -98,7 +98,7 @@ const removeMCQFromQuestionPaper = catchAsync(async (req, res) => {
     message: "MCQ removed from question paper successfully",
     success: true,
     statusCode: 200,
-    data: result,
+    data: null,
   });
 });
 

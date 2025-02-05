@@ -6,19 +6,22 @@ import authSercvices from "./auth.services";
 const logIn = catchAsync(async (req, res) => {
     const { email, password } = req.body
     const result = await authSercvices.logIn(email, password)
-    const { approvalToken, refreshToken } = result
+    const { approvalToken, refreshToken,findUserAndUpdate } = result
 
     res.cookie("refreshToken", refreshToken, {
         secure: config.nodeEnv === "production",
         httpOnly: true,
         sameSite: "strict", // Extra CSRF protection
       });
-
+     
+      console.log(findUserAndUpdate)
     golbalRespnseHandler(res, {
         statusCode: 200,
     success: true,
     message: "Login Successful",
     data: {
+        id:findUserAndUpdate?.id,
+        role:findUserAndUpdate?.userType,
         approvalToken,
         refreshToken,
     }
