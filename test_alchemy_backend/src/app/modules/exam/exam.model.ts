@@ -49,7 +49,6 @@ const examSchema = new Schema<ExamType>(
     id: {
       type: String,
       required: true,
-      unique: true,
     },
     acquiredMark: {
       type: Number,
