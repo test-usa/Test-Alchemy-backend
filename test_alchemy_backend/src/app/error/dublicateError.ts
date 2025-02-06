@@ -5,10 +5,10 @@ const dublicateErrorHandellerr = (err: any) => {
   const errorMessage = match ? match[1] : "No match found";
 
   const statuscode = 400;
-  const message = 'dublicet entry error';
+  const message = "dublicet entry error";
   const errorSource: TErrorSource = [
     {
-      path: '',
+      path: "",
       message: `${errorMessage} already exist`,
     },
   ];
@@ -19,4 +19,4 @@ const dublicateErrorHandellerr = (err: any) => {
   };
 };
 
-export default dublicateErrorHandellerr
+export default dublicateErrorHandellerr;
